@@ -34,7 +34,7 @@ $ php bin/vendors install
 If you prefer instead to use git submodules, then run the following:
 
 ``` bash
-$ git submodule add git://github.com/dreipunktnull/XmlSitemapBundle.git vendor/bundles/Dpn/XmlSitemapBundle
+$ git submodule add git://github.com/dreipunktnull/DpnXmlSitemapBundle.git vendor/bundles/Dpn/XmlSitemapBundle
 $ git submodule update --init
 ```
 
