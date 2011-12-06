@@ -35,7 +35,7 @@ $ php bin/vendors install
 If you prefer instead to use git submodules, then run the following:
 
 ``` bash
-$ git submodule add git://github.com/dreipunktnull/XmlSitemapBundle.git vendor/bundles/Spn/XmlSitemapBundle
+$ git submodule add git://github.com/dreipunktnull/XmlSitemapBundle.git vendor/bundles/Dpn/XmlSitemapBundle
 $ git submodule update --init
 ```
 
@@ -75,7 +75,7 @@ public function registerBundles()
 DpnXmlSitemapBundle:
     resource: "@DpnXmlSitemapBundle/Resources/config/routing.xml"
 ```
-    
+
 #### Configuration
 
 Add the following configuration to your `app/config/config.yml`:
@@ -92,7 +92,7 @@ override these defaults in your `app/config/config.yml`:
 
 #### Usage
 
-To expose a route to the sitemap add a option `sitemap`to your route definition:
+To expose a route to the sitemap add the option `sitemap` to your route definition:
 
 ```xml
 <route id="my_route_to_expose" pattern="/find/me/in/sitemap">
@@ -112,7 +112,7 @@ or annotation
      */
 ```
 
-or simply use defaults:
+or if you simply wnat to use the defaults:
 
 ```php
     /**
