@@ -1,13 +1,11 @@
-dreipunktnull XML sitemap bundle
-================================
+# dreipunktnull XML sitemap bundle
 
 This bundle generates XML sitemaps for your favourite search engine by extracting
 sitemap information out of the site's routes.
 
-Installation
-------------
+## Installation
 
-1. Download the bundle
+### Download the bundle
 
 The DpnXmlSitemapBundle files should be downloaded to the
 'vendor/bundles/Dpn/XmlSitemapBundle' directory.
@@ -15,7 +13,7 @@ The DpnXmlSitemapBundle files should be downloaded to the
 You can accomplish this in several ways, depending on your personal preference.
 The first method is the standard Symfony2 method.
 
-***Using the vendors script***
+**Using the vendors script**
 
 Add the following lines to your `deps` file:
 
@@ -31,7 +29,7 @@ Now, run the vendors script to download the bundle:
 $ php bin/vendors install
 ```
 
-***Using submodules***
+**Using submodules**
 
 If you prefer instead to use git submodules, then run the following:
 
@@ -40,7 +38,7 @@ $ git submodule add git://github.com/dreipunktnull/XmlSitemapBundle.git vendor/b
 $ git submodule update --init
 ```
 
-2. Configure the Autoloader
+### Configure the Autoloader
 
 Now you will need to add the `Dpn` namespace to your autoloader:
 
@@ -54,7 +52,7 @@ $loader->registerNamspaces(array(
 ));
 ```
 
-3. Enable the bundle
+### Enable the bundle
 
 Finally, enable the bundle in the kernel:
 
@@ -71,15 +69,14 @@ public function registerBundles()
 }
 ```
 
-4. Register the routing in `app/config/routing.yml`
+### Register the routing in `app/config/routing.yml`
 
 ```yml
 DpnXmlSitemapBundle:
     resource: "@DpnXmlSitemapBundle/Resources/config/routing.xml"
 ```
 
-Configuration
--------------
+## Configuration
 
 Add the following configuration to your `app/config/config.yml`:
 
@@ -93,8 +90,7 @@ override these defaults in your `app/config/config.yml`:
             priority: 0.5
             changefreq: weekly
 
-Usage
------
+## Usage
 
 To expose a route to the sitemap add the option `sitemap` to your route definition:
 
@@ -127,7 +123,6 @@ or if you simply want to use the defaults:
 The generated sitemap is then available under the url /sitemap.xml and the bundle
 will throw a not found exception if it doesn't contain any routes.
 
-License
--------
+## License
 
 See `Resources/meta/LICENSE`.
