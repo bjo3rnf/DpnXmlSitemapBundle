@@ -1,0 +1,17 @@
+{
+    "name": "dpn/xml-sitemap-bundle",
+    "type": "symfony-bundle",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Björn Fromme",
+            "email": "fromme@dreipunktnull.com",
+            "homepage": "http://www.dreipunktnull.com"
+        }
+    ],
+    "require": { "symfony/framework-bundle": "2.*" },
+    "autoload": {
+        "psr-0": { "Dpn\\XmlSitemapBundle": "" }
+    },
+    "target-dir": "Dpn/XmlSitemapBundle"
+}
