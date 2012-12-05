@@ -1,5 +1,8 @@
 {
     "name": "dpn/xml-sitemap-bundle",
+    "description": "Generates XML sitemaps for your favourite search engine by extracting sitemap information out of the site's routes.",
+    "keywords": ["sitemap"],
+    "license": "MIT",
     "type": "symfony-bundle",
     "authors": [
         {
