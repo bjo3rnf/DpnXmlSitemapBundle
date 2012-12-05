@@ -43,6 +43,8 @@ class Entry
 
     public function setChangeFreq($changeFreq)
     {
+        $changeFreq = strtolower($changeFreq);
+
         if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
             $this->changeFreq = $changeFreq;
         }
@@ -74,7 +76,7 @@ class Entry
 
     public function setPriority($priority)
     {
-        if ($priority >= 0 || $priority <= 1) {
+        if (is_float($priority) && $priority >= 0 && $priority <= 1) {
             $this->priority = $priority;
         }
     }
