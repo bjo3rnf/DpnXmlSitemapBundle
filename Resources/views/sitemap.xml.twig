@@ -3,12 +3,18 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
   http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-{% for route, options in routes %}
-  <url>
-    <loc>{{ url(route) }}</loc>
-    {% for option, value in options %}
-    <{{ option }}>{{ value }}</{{ option }}>
-    {% endfor %}
-  </url>
+{% for entry in entries %}
+    <url>
+        <loc>http://{{ app.request.getHost ~ entry.uri }}</loc>
+        {% if entry.changeFreq %}
+        <changefreq>{{ entry.changeFreq }}</changefreq>
+        {% endif %}
+        {% if entry.priority %}
+        <priority>{{ entry.priority }}</priority>
+        {% endif %}
+        {% if entry.lastMod %}
+        <lastmod>{{ entry.lastMod }}</lastmod>
+        {% endif %}
+    </url>
 {% endfor %}
 </urlset>
