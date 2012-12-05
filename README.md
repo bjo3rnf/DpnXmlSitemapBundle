@@ -5,22 +5,32 @@ sitemap information out of the site's routes.
 
 ## Installation
 
-### Download the bundle
-
 The DpnXmlSitemapBundle files should be downloaded to the
 'vendor/bundles/Dpn/XmlSitemapBundle' directory.
 
 You can accomplish this in several ways, depending on your personal preference.
 The first method is the standard Symfony2 method.
 
-**Using the vendors script**
+### Using composer
+
+Add DpnXmlSitemapBundle in your composer.json:
+
+```json
+{
+    "require": {
+        "dpn/xml-sitemap-bundle": "*"
+    }
+}
+```
+
+### Using the vendors script
 
 Add the following lines to your `deps` file:
 
 ```
-    [DpnXmlSitemapBundle]
-        git=git://github.com/dreipunktnull/XmlSitemapBundle.git
-        target=/bundles/Dpn/XmlSitemapBundle
+[DpnXmlSitemapBundle]
+    git=git://github.com/dreipunktnull/XmlSitemapBundle.git
+    target=/bundles/Dpn/XmlSitemapBundle
 ```
 
 Now, run the vendors script to download the bundle:
@@ -29,7 +39,7 @@ Now, run the vendors script to download the bundle:
 $ php bin/vendors install
 ```
 
-**Using submodules**
+### Using submodules
 
 If you prefer instead to use git submodules, then run the following:
 
@@ -38,7 +48,7 @@ $ git submodule add git://github.com/dreipunktnull/DpnXmlSitemapBundle.git vendo
 $ git submodule update --init
 ```
 
-### Configure the Autoloader
+### Configure the Autoloader (if not using composer)
 
 Now you will need to add the `Dpn` namespace to your autoloader:
 
@@ -120,8 +130,64 @@ or if you simply want to use the defaults:
      */
 ```
 
-The generated sitemap is then available under the url /sitemap.xml and the bundle
-will throw a not found exception if it doesn't contain any routes.
+The generated sitemap is then available under the url /sitemap.xml and the bundle will throw a not found exception
+if it doesn't contain any routes.
+
+### HTTP Caching
+
+You can enable default http caching for the sitemap.xml route by setting the number of seconds in your config:
+
+```yaml
+dpn_xml_sitemap:
+    http_cache: 3600
+```
+
+## Full Default Configuration
+
+```yaml
+dpn_xml_sitemap:
+    http_cache:           ~
+    defaults:
+        priority:             0.5
+        changefreq:           weekly
+```
+
+### Custom Generator
+
+By default, the bundle looks at your routing config to find routes that you have the `sitemap` option set.  You can also
+create your own sitemap entry generator:
+
+1. Create a generator class that implements the `Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface` interface.  This class
+must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Entry` objects.  Here is an 
+example:
+
+    ```php
+    class MySitemapGenerator implements \Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface
+    {
+        public function generate()
+        {
+            $entries = array();
+            
+            $entry = new \Dpn\XmlSitemapBundle\Sitemap\Entry();
+            $entry->setUri('/foo');
+            $entries[] = $entry;
+            
+            // add more entries - perhaps fetched from database
+            
+            return $entries;
+        }
+    }
+    ```
+    
+2. Add this class as a service tagged with `dpn_xml_sitemap.generator`:
+
+    ```yaml
+    services:
+        my.sitemap_generator:
+            class: MySitemapGenerator
+            tags: 
+                - { name: dpn_xml_sitemap.generator }
+    ```
 
 ## License
 

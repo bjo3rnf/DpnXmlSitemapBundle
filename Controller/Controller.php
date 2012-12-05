@@ -13,6 +13,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Dpn\XmlSitemapBundle\Manager\SitemapManager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller class
@@ -21,45 +22,45 @@ use Dpn\XmlSitemapBundle\Manager\SitemapManager;
  */
 class Controller
 {
-    /**
-     * @var Symfony\Bundle\TwigBundle\TwigEngine;
-     */
     protected $templating;
 
-    /**
-     * @var Dpn\XmlSitemapBundle\Manager\SitemapManager
-     */
     protected $manager;
 
+    protected $httpCache;
+
     /**
-     * Constructor
-     *
-     * @param TwigEngine $templating
+     * @param \Dpn\XmlSitemapBundle\Manager\SitemapManager $manager
+     * @param \Symfony\Bundle\TwigBundle\TwigEngine $templating
+     * @param $httpCache
      */
-    public function __construct(SitemapManager $manager, TwigEngine $templating)
+    public function __construct(SitemapManager $manager, TwigEngine $templating, $httpCache)
     {
         $this->templating = $templating;
         $this->manager    = $manager;
+        $this->httpCache  = $httpCache;
     }
 
     /**
-     * Sitemap action
-     *
-     * @param string $_format
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function sitemapAction($_format)
+    public function sitemapAction()
     {
-        $routes = $this->manager->getRoutes();
+        $entries = $this->manager->getSitemapEntries();
 
         // Redirect to 404 error page if no routes are added to sitemap
-        if (!$routes) {
+        if (!$entries) {
             throw new NotFoundHttpException();
         }
 
-        // Render sitemap
-        return $this->templating->renderResponse('DpnXmlSitemapBundle::sitemap.xml.twig', array(
-            'routes' => $routes,
-        ));
+        $response = new Response($this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig', array(
+                'entries' => $entries,
+            )));
+
+        if ($this->httpCache) {
+            $response->setSharedMaxAge($this->httpCache);
+        }
+
+        return $response;
     }
 }
