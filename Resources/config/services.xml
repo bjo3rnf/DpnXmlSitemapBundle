@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="dpn_xml_sitemap.controller.class">Dpn\XmlSitemapBundle\Controller\Controller</parameter>
         <parameter key="dpn_xml_sitemap.manager.class">Dpn\XmlSitemapBundle\Manager\SitemapManager</parameter>
+        <parameter key="dpn_xml_sitemap.route_option_generator.class">Dpn\XmlSitemapBundle\Sitemap\RouteOptionGenerator</parameter>
     </parameters>
 
     <services>
@@ -15,8 +16,11 @@
             <argument type="service" id="templating" />
         </service>
         <service id="dpn_xml_sitemap.manager" class="%dpn_xml_sitemap.manager.class%">
-            <argument type="service" id="router" />
             <argument>%dpn_xml_sitemap.defaults%</argument>
+        </service>
+        <service id="dpn_xml_sitemap.route_option_generator" class="%dpn_xml_sitemap.route_option_generator.class%">
+            <argument type="service" id="router" />
+            <tag name="dpn_xml_sitemap.generator" />
         </service>
     </services>
 

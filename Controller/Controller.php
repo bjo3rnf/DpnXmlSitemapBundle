@@ -13,6 +13,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Dpn\XmlSitemapBundle\Manager\SitemapManager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller class
@@ -21,20 +22,13 @@ use Dpn\XmlSitemapBundle\Manager\SitemapManager;
  */
 class Controller
 {
-    /**
-     * @var Symfony\Bundle\TwigBundle\TwigEngine;
-     */
     protected $templating;
 
-    /**
-     * @var Dpn\XmlSitemapBundle\Manager\SitemapManager
-     */
     protected $manager;
 
     /**
-     * Constructor
-     *
-     * @param TwigEngine $templating
+     * @param \Dpn\XmlSitemapBundle\Manager\SitemapManager $manager
+     * @param \Symfony\Bundle\TwigBundle\TwigEngine $templating
      */
     public function __construct(SitemapManager $manager, TwigEngine $templating)
     {
@@ -50,16 +44,16 @@ class Controller
      */
     public function sitemapAction($_format)
     {
-        $routes = $this->manager->getRoutes();
+        $entries = $this->manager->getSitemapEntries();
 
         // Redirect to 404 error page if no routes are added to sitemap
-        if (!$routes) {
+        if (!$entries) {
             throw new NotFoundHttpException();
         }
 
         // Render sitemap
         return $this->templating->renderResponse('DpnXmlSitemapBundle::sitemap.xml.twig', array(
-            'routes' => $routes,
+            'entries' => $entries,
         ));
     }
 }
