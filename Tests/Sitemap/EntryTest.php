@@ -10,7 +10,7 @@ use Dpn\XmlSitemapBundle\Sitemap\Entry;
 class EntryTest extends \PHPUnit_Framework_TestCase
 {
     protected $defaults = array(
-        'priority' => 0.5,
+        'priority' => '0.5',
         'changefreq' => 'weekly'
     );
 
