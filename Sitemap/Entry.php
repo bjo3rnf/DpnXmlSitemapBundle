@@ -76,7 +76,7 @@ class Entry
 
     public function setPriority($priority)
     {
-        if (is_float($priority) && $priority >= 0 && $priority <= 1) {
+        if (is_numeric($priority) && $priority >= 0 && $priority <= 1) {
             $this->priority = $priority;
         }
     }
