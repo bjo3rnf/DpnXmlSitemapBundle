@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('http_cache')->defaultNull()->end()
                 ->arrayNode('defaults')
                     ->addDefaultsIfNotSet()
                     ->children()

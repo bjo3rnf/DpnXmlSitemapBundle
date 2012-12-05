@@ -26,23 +26,25 @@ class Controller
 
     protected $manager;
 
+    protected $httpCache;
+
     /**
      * @param \Dpn\XmlSitemapBundle\Manager\SitemapManager $manager
      * @param \Symfony\Bundle\TwigBundle\TwigEngine $templating
+     * @param $httpCache
      */
-    public function __construct(SitemapManager $manager, TwigEngine $templating)
+    public function __construct(SitemapManager $manager, TwigEngine $templating, $httpCache)
     {
         $this->templating = $templating;
         $this->manager    = $manager;
+        $this->httpCache  = $httpCache;
     }
 
     /**
-     * Sitemap action
-     *
-     * @param string $_format
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function sitemapAction($_format)
+    public function sitemapAction()
     {
         $entries = $this->manager->getSitemapEntries();
 
@@ -51,9 +53,14 @@ class Controller
             throw new NotFoundHttpException();
         }
 
-        // Render sitemap
-        return $this->templating->renderResponse('DpnXmlSitemapBundle::sitemap.xml.twig', array(
-            'entries' => $entries,
-        ));
+        $response = new Response($this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig', array(
+                'entries' => $entries,
+            )));
+
+        if ($this->httpCache) {
+            $response->setSharedMaxAge($this->httpCache);
+        }
+
+        return $response;
     }
 }

@@ -23,6 +23,7 @@ class DpnXmlSitemapExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('dpn_xml_sitemap.defaults', $config['defaults']);
+        $container->setParameter('dpn_xml_sitemap.http_cache', $config['http_cache']);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');

@@ -120,8 +120,27 @@ or if you simply want to use the defaults:
      */
 ```
 
-The generated sitemap is then available under the url /sitemap.xml and the bundle
-will throw a not found exception if it doesn't contain any routes.
+The generated sitemap is then available under the url /sitemap.xml and the bundle will throw a not found exception
+if it doesn't contain any routes.
+
+### HTTP Caching
+
+You can enable default http caching for the sitemap.xml route by setting the number of seconds in your config:
+
+```yaml
+dpn_xml_sitemap:
+    http_cache: 3600
+```
+
+## Full Default Configuration
+
+```yaml
+dpn_xml_sitemap:
+    http_cache:           ~
+    defaults:
+        priority:             0.5
+        changefreq:           weekly
+```
 
 ## License
 
