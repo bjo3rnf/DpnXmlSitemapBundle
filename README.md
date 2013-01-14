@@ -133,6 +133,21 @@ or if you simply want to use the defaults:
 The generated sitemap is then available under the url /sitemap.xml and the bundle will throw a not found exception
 if it doesn't contain any routes.
 
+### Sitemap Index
+
+According to [sitemaps.org](http://www.sitemaps.org/protocol.html#index) the maximum number of entries a `sitemap.xml`
+may have is 50,000.  When the number of sitemap entries exceeds this, the entires are split across multiple sitemaps
+(ie `/sitemap1.xml`,`/sitemap2.xml`...`/sitemapN.xml`).
+
+A sitemap index is accessible at `/sitemap_index.xml`.
+
+The maximum entries per sitemap is configurable:
+
+```yaml
+dpn_xml_sitemap:
+    max_per_sitemap: 50000 #default
+```
+
 ### HTTP Caching
 
 You can enable default http caching for the sitemap.xml route by setting the number of seconds in your config:
@@ -146,7 +161,8 @@ dpn_xml_sitemap:
 
 ```yaml
 dpn_xml_sitemap:
-    http_cache:           ~
+    http_cache:               ~
+    max_per_sitemap:          50000
     defaults:
         priority:             0.5
         changefreq:           weekly
@@ -158,7 +174,7 @@ By default, the bundle looks at your routing config to find routes that you have
 create your own sitemap entry generator:
 
 1. Create a generator class that implements the `Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface` interface.  This class
-must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Entry` objects.  Here is an 
+must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Entry` objects.  Here is an
 example:
 
     ```php
@@ -167,25 +183,25 @@ example:
         public function generate()
         {
             $entries = array();
-            
+
             $entry = new \Dpn\XmlSitemapBundle\Sitemap\Entry();
             $entry->setUri('/foo');
             $entries[] = $entry;
-            
+
             // add more entries - perhaps fetched from database
-            
+
             return $entries;
         }
     }
     ```
-    
+
 2. Add this class as a service tagged with `dpn_xml_sitemap.generator`:
 
     ```yaml
     services:
         my.sitemap_generator:
             class: MySitemapGenerator
-            tags: 
+            tags:
                 - { name: dpn_xml_sitemap.generator }
     ```
 

@@ -7,4 +7,15 @@
         <default key="_controller">dpn_xml_sitemap.controller:sitemapAction</default>
         <default key="_format">xml</default>
     </route>
+
+    <route id="dpn_xml_sitemap_number" pattern="/sitemap{number}.xml">
+        <default key="_controller">dpn_xml_sitemap.controller:sitemapNumberAction</default>
+        <default key="_format">xml</default>
+        <requirement key="number">\d+</requirement>
+    </route>
+
+    <route id="dpn_xml_sitemap_index" pattern="/sitemap_index.xml">
+        <default key="_controller">dpn_xml_sitemap.controller:sitemapIndexAction</default>
+        <default key="_format">xml</default>
+    </route>
 </routes>
