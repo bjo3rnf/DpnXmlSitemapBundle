@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('http_cache')->defaultNull()->end()
+                ->scalarNode('max_per_sitemap')->defaultValue(50000)->end()
                 ->arrayNode('defaults')
                     ->addDefaultsIfNotSet()
                     ->children()

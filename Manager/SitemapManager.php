@@ -15,10 +15,15 @@ use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
  * Sitemap manager class
  *
  * @author Björn Fromme <mail@bjo3rn.com>
+ * @author Kevin Bond <kevinbond@gmail.com>
  */
 class SitemapManager
 {
     protected $defaults;
+
+    protected $maxPerSitemap;
+
+    protected $entries;
 
     /**
      * @var GeneratorInterface[]
@@ -30,9 +35,10 @@ class SitemapManager
      *
      * @param array $defaults
      */
-    public function __construct(array $defaults)
+    public function __construct(array $defaults, $maxPerSitemap)
     {
         $this->defaults = $defaults;
+        $this->maxPerSitemap = $maxPerSitemap;
     }
 
     public function addGenerator(GeneratorInterface $generator)
@@ -45,6 +51,52 @@ class SitemapManager
      */
     public function getSitemapEntries()
     {
+        $this->buildSitemapEntries();
+
+        return $this->entries;
+    }
+
+    public function countSitemapEntries()
+    {
+        $this->buildSitemapEntries();
+
+        return count($this->entries);
+    }
+
+    public function getNumberOfSitemaps()
+    {
+        $total = $this->countSitemapEntries();
+
+        if ($total <= $this->maxPerSitemap) {
+            return 1;
+        }
+
+        return (int) ceil($total / $this->maxPerSitemap);
+    }
+
+    public function getEntriesForSitemap($number)
+    {
+        $numberOfSitemaps = $this->getNumberOfSitemaps();
+
+        if ($number > $numberOfSitemaps) {
+            throw new \InvalidArgumentException('Number exceeds total sitemap count.');
+        }
+
+        if (1 === $numberOfSitemaps) {
+            return $this->getSitemapEntries();
+        }
+
+        $sitemaps = array_chunk($this->getSitemapEntries(), $this->maxPerSitemap);
+
+        return $sitemaps[$number - 1];
+    }
+
+    protected function buildSitemapEntries()
+    {
+        if ($this->entries) {
+            return;
+        }
+
         /** @var $entries \Dpn\XmlSitemapBundle\Sitemap\Entry[] */
         $entries = array();
 
@@ -57,6 +109,6 @@ class SitemapManager
             $entry->setDefaults($this->defaults);
         }
 
-        return $entries;
+        $this->entries = $entries;
     }
 }
