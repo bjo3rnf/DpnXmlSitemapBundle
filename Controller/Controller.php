@@ -54,20 +54,12 @@ class Controller
     {
         $total = $this->manager->getNumberOfSitemaps();
 
-        if ($total > 1) {
-            return new RedirectResponse($this->router->generate('dpn_xml_sitemap_number', array('number' => 1)));
-        }
-
         return $this->renderSitemap($this->manager->getSitemapEntries());
     }
 
     public function sitemapNumberAction($number)
     {
         $total = $this->manager->getNumberOfSitemaps();
-
-        if (1 === $total) {
-            return new RedirectResponse($this->router->generate('dpn_xml_sitemap'));
-        }
 
         if ($number > $total) {
             return new RedirectResponse($this->router->generate('dpn_xml_sitemap_number', array('number' => $total)));
