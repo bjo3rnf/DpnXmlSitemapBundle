@@ -118,7 +118,7 @@ or annotation
 
 ```php
     /**
-     * @Route("/find/me/in/sitemap", options={"sitemap" = {"priority" = 0.7}})
+     * @Route("/find/me/in/sitemap", options={"sitemap" = {"priority" = 0.7, "changefreq" => "weekly", "check_format" => "true"}})
      */
 ```
 
@@ -157,12 +157,19 @@ dpn_xml_sitemap:
     http_cache: 3600
 ```
 
+### Check Format
+
+By default, there is a simple formatting check that will help prevent incorrect routes.  However, if you have a site
+that uses trailing / and you're sure the routes are correct, you may want to disable the check in the configuration and when
+you call the setUri method.
+
 ## Full Default Configuration
 
 ```yaml
 dpn_xml_sitemap:
     http_cache:               ~
     max_per_sitemap:          50000
+    check_format:             true
     defaults:
         priority:             0.5
         changefreq:           weekly
