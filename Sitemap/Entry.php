@@ -86,9 +86,13 @@ class Entry
         return $this->priority;
     }
 
-    public function setUri($uri)
+    public function setUri($uri, $check_format = true)
     {
-        $this->uri = '/' . trim($uri, '/');
+        if ($check_format) {
+          $this->uri = '/' . trim($uri, '/');
+        } else {
+          $this->uri = $uri;
+        }
     }
 
     public function getUri()

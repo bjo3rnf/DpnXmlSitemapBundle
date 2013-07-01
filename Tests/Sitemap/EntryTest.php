@@ -80,6 +80,20 @@ class EntryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/foo', $entry->getUri());
     }
 
+    public function testSetUriWithoutCheckFormat()
+    {
+        $entry = new Entry();
+
+        $entry->setUri('/foo', false);
+        $this->assertEquals('/foo', $entry->getUri());
+
+        $entry->setUri('/foo/', false);
+        $this->assertEquals('/foo/', $entry->getUri());
+        
+        $entry->setUri('foo', false);
+        $this->assertEquals('foo', $entry->getUri());
+    }
+    
     public function testSetChangeFreq()
     {
         $entry = new Entry();
