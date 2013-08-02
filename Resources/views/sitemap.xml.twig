@@ -5,7 +5,7 @@
   http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 {% for entry in entries %}
     <url>
-        <loc>http://{{ app.request.getHost ~ entry.uri }}</loc>
+        <loc>{{ entry.scheme }}://{{ app.request.getHost ~ entry.uri }}</loc>
         {% if entry.changeFreq %}
         <changefreq>{{ entry.changeFreq }}</changefreq>
         {% endif %}

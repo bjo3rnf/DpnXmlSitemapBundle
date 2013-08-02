@@ -11,7 +11,8 @@ class EntryTest extends \PHPUnit_Framework_TestCase
 {
     protected $defaults = array(
         'priority' => '0.5',
-        'changefreq' => 'weekly'
+        'changefreq' => 'weekly',
+        'scheme' => 'http'
     );
 
     public function testSetDefaults()
@@ -35,6 +36,11 @@ class EntryTest extends \PHPUnit_Framework_TestCase
         $entry->setDefaults($this->defaults);
         $this->assertEquals('weekly', $entry->getChangeFreq());
         $this->assertEquals(0.1, $entry->getPriority());
+
+        $entry = new Entry();
+
+        $entry->setDefaults($this->defaults);
+        $this->assertEquals('http', $entry->getScheme());
     }
 
     public function testBadDefaultsPriority()
@@ -89,11 +95,11 @@ class EntryTest extends \PHPUnit_Framework_TestCase
 
         $entry->setUri('/foo/', false);
         $this->assertEquals('/foo/', $entry->getUri());
-        
+
         $entry->setUri('foo', false);
         $this->assertEquals('foo', $entry->getUri());
     }
-    
+
     public function testSetChangeFreq()
     {
         $entry = new Entry();
@@ -123,5 +129,15 @@ class EntryTest extends \PHPUnit_Framework_TestCase
 
         $entry->setPriority('0.5');
         $this->assertEquals(0.5, $entry->getPriority());
+    }
+
+    public function testSetScheme()
+    {
+        $entry = new Entry();
+
+        $entry->setScheme('https');
+        $entry->setDefaults($this->defaults);
+
+        $this->assertEquals('https', $entry->getScheme());
     }
 }

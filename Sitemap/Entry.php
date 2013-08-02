@@ -22,6 +22,8 @@ class Entry
 
     protected $priority;
 
+    protected $scheme;
+
     public function setDefaults(array $defaults)
     {
         if (isset($defaults['changefreq']) && !$this->getChangeFreq()) {
@@ -37,6 +39,14 @@ class Entry
 
             if (!$this->getPriority()) {
                 throw new \InvalidArgumentException(sprintf('Your default changefreq "%s" is invalid.', $defaults['priority']));
+            }
+        }
+
+        if (isset($defaults['scheme']) && !$this->getScheme()) {
+            $this->setScheme($defaults['scheme']);
+
+            if (!$this->getScheme()) {
+                throw new \InvalidArgumentException(sprintf('Your default scheme "%s" is invalid.', $defaults['scheme']));
             }
         }
     }
@@ -98,5 +108,15 @@ class Entry
     public function getUri()
     {
         return $this->uri;
+    }
+
+    public function setScheme($scheme)
+    {
+        $this->scheme = $scheme;
+    }
+
+    public function getScheme()
+    {
+        return $this->scheme;
     }
 }

@@ -2,11 +2,11 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     {% for number in 1..num_sitemaps if num_sitemaps > 1 %}
         <sitemap>
-            <loc>http://{{ app.request.getHost }}/sitemap{{ number }}.xml</loc>
+            <loc>{{ app.request.getSchemeAndHttpHost }}/sitemap{{ number }}.xml</loc>
         </sitemap>
     {% else %}
         <sitemap>
-            <loc>http://{{ app.request.getHost }}/sitemap.xml</loc>
+            <loc>{{ app.request.getSchemeAndHttpHost }}/sitemap.xml</loc>
         </sitemap>
     {% endfor %}
 </sitemapindex>
