@@ -24,30 +24,26 @@ class Entry
 
     protected $scheme;
 
-    public function setDefaults(array $defaults)
+    protected $defaults = array(
+        'scheme' => 'http',
+        'priority' => '0.5',
+        'changefreq' => 'weekly'
+    );
+
+    public function setDefaults(array $defaults = array())
     {
-        if (isset($defaults['changefreq']) && !$this->getChangeFreq()) {
+        $defaults = array_merge($this->defaults, $defaults);
+
+        if (!$this->getChangeFreq()) {
             $this->setChangeFreq($defaults['changefreq']);
-
-            if (!$this->getChangeFreq()) {
-                throw new \InvalidArgumentException(sprintf('Your default priority "%s" is invalid.', $defaults['changefreq']));
-            }
         }
 
-        if (isset($defaults['priority']) && !$this->getPriority()) {
+        if (!$this->getPriority()) {
             $this->setPriority($defaults['priority']);
-
-            if (!$this->getPriority()) {
-                throw new \InvalidArgumentException(sprintf('Your default changefreq "%s" is invalid.', $defaults['priority']));
-            }
         }
 
-        if (isset($defaults['scheme']) && !$this->getScheme()) {
+        if (!$this->getScheme()) {
             $this->setScheme($defaults['scheme']);
-
-            if (!$this->getScheme()) {
-                throw new \InvalidArgumentException(sprintf('Your default scheme "%s" is invalid.', $defaults['scheme']));
-            }
         }
     }
 

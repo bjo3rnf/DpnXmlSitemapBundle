@@ -43,24 +43,6 @@ class EntryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('http', $entry->getScheme());
     }
 
-    public function testBadDefaultsPriority()
-    {
-        $defaults = array('priority' => 'foo');
-        $entry = new Entry();
-
-        $this->setExpectedException('\InvalidArgumentException');
-        $entry->setDefaults($defaults);
-    }
-
-    public function testBadDefaultsChangeFreq()
-    {
-        $defaults = array('changefreq' => 'foo');
-        $entry = new Entry();
-
-        $this->setExpectedException('\InvalidArgumentException');
-        $entry->setDefaults($defaults);
-    }
-
     public function testSetLastMod()
     {
         $entry = new Entry();
