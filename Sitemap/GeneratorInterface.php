@@ -17,5 +17,5 @@ interface GeneratorInterface
     /**
      * @return Entry[]
      */
-    function generate();
+    public function generate();
 }

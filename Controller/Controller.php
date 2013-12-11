@@ -33,8 +33,8 @@ class Controller
     protected $httpCache;
 
     /**
-     * @param \Dpn\XmlSitemapBundle\Manager\SitemapManager $manager
-     * @param \Symfony\Bundle\TwigBundle\TwigEngine $templating
+     * @param \Dpn\XmlSitemapBundle\Manager\SitemapManager   $manager
+     * @param \Symfony\Bundle\TwigBundle\TwigEngine          $templating
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      * @param $httpCache
      */
@@ -82,7 +82,7 @@ class Controller
     }
 
     /**
-     * @param array $entries
+     * @param  array                                      $entries
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderSitemap(array $entries)
