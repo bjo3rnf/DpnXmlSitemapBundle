@@ -133,6 +133,10 @@ class SitemapManager
         return $sitemaps[$number - 1];
     }
 
+    /**
+     * @param integer|null $number
+     * @return string
+     */
     public function renderSitemap($number = null)
     {
         if (null === $number) {
@@ -150,12 +154,14 @@ class SitemapManager
     }
 
     /**
-     * @return string The rendered template
+     * @param string $host
+     * @return string
      */
-    public function renderSitemapIndex()
+    public function renderSitemapIndex($host)
     {
         return $this->templating->render('DpnXmlSitemapBundle::sitemap_index.xml.twig', array(
-                'num_sitemaps' => $this->getNumberOfSitemaps()
+                'num_sitemaps' => $this->getNumberOfSitemaps(),
+                'host' => $host
             )
         );
     }

@@ -11,6 +11,7 @@ namespace Dpn\XmlSitemapBundle\Controller;
 
 use Dpn\XmlSitemapBundle\Sitemap\SitemapManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -83,16 +84,17 @@ class SitemapController
     }
 
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sitemapIndexAction()
+    public function sitemapIndexAction(Request $request)
     {
-        return $this->createResponse($this->manager->renderSitemapIndex());
+        return $this->createResponse($this->manager->renderSitemapIndex($request->getSchemeAndHttpHost()));
     }
 
     /**
      * @param string $template
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function createResponse($template)
     {
