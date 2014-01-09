@@ -9,12 +9,12 @@
 
 namespace Dpn\XmlSitemapBundle\Controller;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Templating\EngineInterface as TwigEngine;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Dpn\XmlSitemapBundle\Manager\SitemapManager;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -38,7 +38,7 @@ class Controller
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      * @param $httpCache
      */
-    public function __construct(SitemapManager $manager, TwigEngine $templating, Router $router, $httpCache)
+    public function __construct(SitemapManager $manager, TwigEngine $templating, RouterInterface $router, $httpCache)
     {
         $this->templating = $templating;
         $this->manager    = $manager;
