@@ -23,7 +23,7 @@ class GeneratorCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('dpn_xml_sitemap.manager')) {
+        if (false === $container->hasDefinition('dpn_xml_sitemap.manager')) {
             return;
         }
 

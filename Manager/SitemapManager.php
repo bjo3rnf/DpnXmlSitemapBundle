@@ -19,10 +19,19 @@ use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
  */
 class SitemapManager
 {
+    /**
+     * @var array
+     */
     protected $defaults;
 
+    /**
+     * @var integer
+     */
     protected $maxPerSitemap;
 
+    /**
+     * @var array
+     */
     protected $entries;
 
     /**
@@ -34,13 +43,17 @@ class SitemapManager
      * Class constructor
      *
      * @param array $defaults
+     * @param integer $maxPerSitemap
      */
     public function __construct(array $defaults, $maxPerSitemap)
     {
         $this->defaults = $defaults;
-        $this->maxPerSitemap = $maxPerSitemap;
+        $this->maxPerSitemap = intval($maxPerSitemap);
     }
 
+    /**
+     * @param GeneratorInterface $generator
+     */
     public function addGenerator(GeneratorInterface $generator)
     {
         $this->generators[] = $generator;
@@ -56,6 +69,9 @@ class SitemapManager
         return $this->entries;
     }
 
+    /**
+     * @return integer
+     */
     public function countSitemapEntries()
     {
         $this->buildSitemapEntries();
@@ -63,6 +79,9 @@ class SitemapManager
         return count($this->entries);
     }
 
+    /**
+     * @return integer
+     */
     public function getNumberOfSitemaps()
     {
         $total = $this->countSitemapEntries();
@@ -71,9 +90,14 @@ class SitemapManager
             return 1;
         }
 
-        return (int) ceil($total / $this->maxPerSitemap);
+        return intval(ceil($total / $this->maxPerSitemap));
     }
 
+    /**
+     * @param $number
+     * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
+     * @throws \InvalidArgumentException
+     */
     public function getEntriesForSitemap($number)
     {
         $numberOfSitemaps = $this->getNumberOfSitemaps();
@@ -93,18 +117,17 @@ class SitemapManager
 
     protected function buildSitemapEntries()
     {
-        if ($this->entries) {
+        if (null !== $this->entries) {
             return;
         }
 
-        /** @var $entries \Dpn\XmlSitemapBundle\Sitemap\Entry[] */
+        /** @var \Dpn\XmlSitemapBundle\Sitemap\Entry[] $entries */
         $entries = array();
 
         foreach ($this->generators as $generator) {
             $entries = array_merge($entries, $generator->generate());
         }
 
-        // set defaults
         foreach ($entries as $entry) {
             $entry->setDefaults($this->defaults);
         }

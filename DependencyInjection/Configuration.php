@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('http_cache')->defaultNull()->end()
                 ->scalarNode('max_per_sitemap')->defaultValue(50000)->end()
-                ->scalarNode('check_format')->defaultValue('true')->end()
+                ->booleanNode('check_format')->defaultTrue()->end()
                 ->arrayNode('defaults')
                     ->addDefaultsIfNotSet()
                     ->children()
