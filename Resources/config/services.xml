@@ -13,13 +13,13 @@
     <services>
         <service id="dpn_xml_sitemap.controller" class="%dpn_xml_sitemap.controller.class%">
             <argument type="service" id="dpn_xml_sitemap.manager" />
-            <argument type="service" id="templating" />
             <argument type="service" id="router" />
             <argument>%dpn_xml_sitemap.http_cache%</argument>
         </service>
         <service id="dpn_xml_sitemap.manager" class="%dpn_xml_sitemap.manager.class%">
             <argument>%dpn_xml_sitemap.defaults%</argument>
             <argument>%dpn_xml_sitemap.max_per_sitemap%</argument>
+            <argument type="service" id="templating" />
         </service>
         <service id="dpn_xml_sitemap.route_option_generator" class="%dpn_xml_sitemap.route_option_generator.class%">
             <argument type="service" id="router" />

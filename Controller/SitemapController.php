@@ -9,12 +9,10 @@
 
 namespace Dpn\XmlSitemapBundle\Controller;
 
-use Dpn\XmlSitemapBundle\Sitemap\Entry;
 use Dpn\XmlSitemapBundle\Sitemap\SitemapManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Controller class
@@ -23,11 +21,6 @@ use Symfony\Component\Templating\EngineInterface;
  */
 class SitemapController
 {
-    /**
-     * @var \Symfony\Component\Templating\EngineInterface
-     */
-    protected $templating;
-
     /**
      * @var \Dpn\XmlSitemapBundle\Sitemap\SitemapManager
      */
@@ -45,13 +38,11 @@ class SitemapController
 
     /**
      * @param \Dpn\XmlSitemapBundle\Sitemap\SitemapManager $manager
-     * @param \Symfony\Component\Templating\EngineInterface $templating
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @param integer $httpCache
      */
-    public function __construct(SitemapManager $manager, EngineInterface $templating, RouterInterface $router, $httpCache = null)
+    public function __construct(SitemapManager $manager, RouterInterface $router, $httpCache = null)
     {
-        $this->templating = $templating;
         $this->manager    = $manager;
         $this->router     = $router;
         $this->httpCache  = $httpCache;
@@ -62,14 +53,12 @@ class SitemapController
      */
     public function sitemapAction()
     {
-        $total = $this->manager->getNumberOfSitemaps();
-
-        if ($total > 1) {
+        if ($this->manager->getNumberOfSitemaps() > 1) {
             // redirect to /sitemap1.xml
             return new RedirectResponse($this->router->generate('_dpn_xml_sitemap_number', array('number' => 1)));
         }
 
-        return $this->renderSitemap($this->manager->getSitemapEntries());
+        return $this->createResponse($this->manager->renderSitemap());
     }
 
     /**
@@ -90,7 +79,7 @@ class SitemapController
             return new RedirectResponse($this->router->generate('_dpn_xml_sitemap_number', array('number' => $total)));
         }
 
-        return $this->renderSitemap($this->manager->getEntriesForSitemap($number));
+        return $this->createResponse($this->manager->renderSitemap($number));
     }
 
     /**
@@ -98,29 +87,16 @@ class SitemapController
      */
     public function sitemapIndexAction()
     {
-        $response = new Response($this->templating->render('DpnXmlSitemapBundle::sitemap_index.xml.twig', array(
-            'num_sitemaps' => $this->manager->getNumberOfSitemaps()
-        )));
-
-        if (null !== $this->httpCache && 0 < $this->httpCache) {
-            $response->setSharedMaxAge($this->httpCache);
-        }
-
-        return $response;
+        return $this->createResponse($this->manager->renderSitemapIndex());
     }
 
     /**
-     * @param  array $entries
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param string $template
+     * @return Response
      */
-    protected function renderSitemap(array $entries)
+    protected function createResponse($template)
     {
-        $defaults = $this->manager->getDefaults();
-
-        $response = new Response($this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig', array(
-            'entries' => $entries,
-            'default' => new Entry('__default__', null, $defaults['changefreq'], $defaults['priority'])
-        )));
+        $response = new Response($template);
 
         if (null !== $this->httpCache && 0 < $this->httpCache) {
             $response->setSharedMaxAge($this->httpCache);

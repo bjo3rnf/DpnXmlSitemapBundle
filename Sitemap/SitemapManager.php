@@ -9,6 +9,8 @@
 
 namespace Dpn\XmlSitemapBundle\Sitemap;
 
+use Symfony\Component\Templating\EngineInterface;
+
 /**
  * Sitemap manager class
  *
@@ -38,15 +40,27 @@ class SitemapManager
     protected $generators = array();
 
     /**
-     * Class constructor
-     *
-     * @param array $defaults
-     * @param integer $maxPerSitemap
+     * @var EngineInterface
      */
-    public function __construct(array $defaults, $maxPerSitemap)
+    protected $templating;
+
+    /**
+     * @param array           $defaults
+     * @param integer         $maxPerSitemap
+     * @param EngineInterface $templating
+     */
+    public function __construct(array $defaults, $maxPerSitemap, EngineInterface $templating)
     {
-        $this->defaults = $defaults;
+        $this->defaults = array_merge(
+            array(
+                'priority' => null,
+                'changefreq' => null
+            ),
+            $defaults
+        );
+
         $this->maxPerSitemap = intval($maxPerSitemap);
+        $this->templating = $templating;
     }
 
     /**
@@ -55,14 +69,6 @@ class SitemapManager
     public function addGenerator(GeneratorInterface $generator)
     {
         $this->generators[] = $generator;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDefaults()
-    {
-        return $this->defaults;
     }
 
     /**
@@ -125,5 +131,32 @@ class SitemapManager
         $sitemaps = array_chunk($this->getSitemapEntries(), $this->maxPerSitemap);
 
         return $sitemaps[$number - 1];
+    }
+
+    public function renderSitemap($number = null)
+    {
+        if (null === $number) {
+            $entries = $this->getSitemapEntries();
+        } else {
+            $entries = $this->getEntriesForSitemap($number);
+        }
+
+        return $this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig',
+            array(
+                'entries' => $entries,
+                'default' => new Entry('__default__', null, $this->defaults['changefreq'], $this->defaults['priority'])
+            )
+        );
+    }
+
+    /**
+     * @return string The rendered template
+     */
+    public function renderSitemapIndex()
+    {
+        return $this->templating->render('DpnXmlSitemapBundle::sitemap_index.xml.twig', array(
+                'num_sitemaps' => $this->getNumberOfSitemaps()
+            )
+        );
     }
 }
