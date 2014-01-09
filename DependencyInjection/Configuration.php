@@ -23,7 +23,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('defaults')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('scheme')->defaultValue('http')->end()
                         ->scalarNode('priority')->defaultValue('0.5')->end()
                         ->scalarNode('changefreq')->defaultValue('weekly')->end()
                     ->end()
