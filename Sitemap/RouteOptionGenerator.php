@@ -9,26 +9,36 @@
 
 namespace Dpn\XmlSitemapBundle\Sitemap;
 
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 class RouteOptionGenerator implements GeneratorInterface
 {
+    /**
+     * @var \Symfony\Component\Routing\RouterInterface
+     */
     protected $router;
 
-    protected $check_format;
+    /**
+     * @var boolean
+     */
+    protected $checkFormat;
 
-    public function __construct(RouterInterface $router, $check_format)
+    /**
+     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @param boolean $checkFormat
+     */
+    public function __construct(RouterInterface $router, $checkFormat)
     {
         $this->router = $router;
-        $this->check_format = $check_format;
+        $this->checkFormat = $checkFormat;
     }
 
     /**
-     * @return array|Entry[]
+     * @return Entry[]
      * @throws \InvalidArgumentException
      */
     public function generate()
@@ -37,13 +47,13 @@ class RouteOptionGenerator implements GeneratorInterface
         $collection = $this->router->getRouteCollection();
 
         foreach ($collection->all() as $name => $route) {
-            /** @var $route \Symfony\Component\Routing\Route */
+            /** @var \Symfony\Component\Routing\Route $route */
             $option = $route->getOption('sitemap');
 
-            if ($option && (true === $option) || is_array($option)) {
+            if (true === $option || true === is_array($option)) {
                 $options = array();
 
-                if (is_array($option)) {
+                if (true === is_array($option)) {
                     $options = $option;
                 }
 
@@ -55,22 +65,22 @@ class RouteOptionGenerator implements GeneratorInterface
                     throw new \InvalidArgumentException(sprintf('The route "%s" cannot have the sitemap option because it requires parameters', $name));
                 }
 
-                $check_format = $this->check_format;
-                if (isset($options['check_format'])) {
-                    $check_format = $options['check_format'];
+                $checkFormat = $this->checkFormat;
+                if (true === isset($options['check_format'])) {
+                    $checkFormat = $options['check_format'];
                 }
 
-                $entry->setUri($uri, $check_format);
+                $entry->setUri($uri, $checkFormat);
 
-                if (isset($options['priority'])) {
+                if (true === isset($options['priority'])) {
                     $entry->setPriority($options['priority']);
                 }
 
-                if (isset($options['changefreq'])) {
+                if (true === isset($options['changefreq'])) {
                     $entry->setChangeFreq($options['changefreq']);
                 }
 
-                if (isset($options['lastmod'])) {
+                if (true === isset($options['lastmod'])) {
                     $entry->setLastMod($options['lastmod']);
                 }
 
