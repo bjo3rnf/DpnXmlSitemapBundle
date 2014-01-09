@@ -4,8 +4,14 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
   http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 {% for entry in entries %}
+	{% if entry.scheme is defined %}
+		{% set scheme = entry.scheme %}
+	{% else %}
+		{% set scheme = app.request.getScheme %}
+	{% endif %}
+
     <url>
-        <loc>{{ entry.scheme }}://{{ app.request.getHost ~ entry.uri }}</loc>
+        <loc>{{ scheme }}://{{ app.request.getHost ~ entry.uri }}</loc>
         {% if entry.changeFreq %}
         <changefreq>{{ entry.changeFreq }}</changefreq>
         {% endif %}

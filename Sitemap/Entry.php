@@ -25,7 +25,6 @@ class Entry
     protected $scheme;
 
     protected $defaults = array(
-        'scheme' => 'http',
         'priority' => '0.5',
         'changefreq' => 'weekly'
     );
@@ -40,10 +39,6 @@ class Entry
 
         if (!$this->getPriority()) {
             $this->setPriority($defaults['priority']);
-        }
-
-        if (!$this->getScheme()) {
-            $this->setScheme($defaults['scheme']);
         }
     }
 
