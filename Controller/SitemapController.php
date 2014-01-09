@@ -9,7 +9,8 @@
 
 namespace Dpn\XmlSitemapBundle\Controller;
 
-use Dpn\XmlSitemapBundle\Manager\SitemapManager;
+use Dpn\XmlSitemapBundle\Sitemap\Entry;
+use Dpn\XmlSitemapBundle\Sitemap\SitemapManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\Templating\EngineInterface;
  *
  * @author Björn Fromme <mail@bjo3rn.com>
  */
-class Controller
+class SitemapController
 {
     /**
      * @var \Symfony\Component\Templating\EngineInterface
@@ -28,7 +29,7 @@ class Controller
     protected $templating;
 
     /**
-     * @var \Dpn\XmlSitemapBundle\Manager\SitemapManager
+     * @var \Dpn\XmlSitemapBundle\Sitemap\SitemapManager
      */
     protected $manager;
 
@@ -43,7 +44,7 @@ class Controller
     protected $httpCache;
 
     /**
-     * @param \Dpn\XmlSitemapBundle\Manager\SitemapManager $manager
+     * @param \Dpn\XmlSitemapBundle\Sitemap\SitemapManager $manager
      * @param \Symfony\Component\Templating\EngineInterface $templating
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @param integer $httpCache
@@ -73,7 +74,7 @@ class Controller
         $total = $this->manager->getNumberOfSitemaps();
 
         if ($number > $total) {
-            return new RedirectResponse($this->router->generate('dpn_xml_sitemap_number', array('number' => $total)));
+            return new RedirectResponse($this->router->generate('_dpn_xml_sitemap_number', array('number' => $total)));
         }
 
         return $this->renderSitemap($this->manager->getEntriesForSitemap($number));
@@ -101,8 +102,11 @@ class Controller
      */
     protected function renderSitemap(array $entries)
     {
+        $defaults = $this->manager->getDefaults();
+
         $response = new Response($this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig', array(
             'entries' => $entries,
+            'default' => new Entry('__default__', null, $defaults['changefreq'], $defaults['priority'])
         )));
 
         if (null !== $this->httpCache && 0 < $this->httpCache) {

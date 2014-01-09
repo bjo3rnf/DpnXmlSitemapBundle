@@ -7,9 +7,7 @@
  *
  */
 
-namespace Dpn\XmlSitemapBundle\Manager;
-
-use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
+namespace Dpn\XmlSitemapBundle\Sitemap;
 
 /**
  * Sitemap manager class
@@ -30,7 +28,7 @@ class SitemapManager
     protected $maxPerSitemap;
 
     /**
-     * @var array
+     * @var \Dpn\XmlSitemapBundle\Sitemap\Entry[]|null
      */
     protected $entries;
 
@@ -60,13 +58,29 @@ class SitemapManager
     }
 
     /**
+     * @return array
+     */
+    public function getDefaults()
+    {
+        return $this->defaults;
+    }
+
+    /**
      * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
      */
     public function getSitemapEntries()
     {
-        $this->buildSitemapEntries();
+        if (null !== $this->entries) {
+            return $this->entries;
+        }
 
-        return $this->entries;
+        $entries = array();
+
+        foreach ($this->generators as $generator) {
+            $entries = array_merge($entries, $generator->generate());
+        }
+
+        return $this->entries = $entries;
     }
 
     /**
@@ -74,9 +88,7 @@ class SitemapManager
      */
     public function countSitemapEntries()
     {
-        $this->buildSitemapEntries();
-
-        return count($this->entries);
+        return count($this->getSitemapEntries());
     }
 
     /**
@@ -113,25 +125,5 @@ class SitemapManager
         $sitemaps = array_chunk($this->getSitemapEntries(), $this->maxPerSitemap);
 
         return $sitemaps[$number - 1];
-    }
-
-    protected function buildSitemapEntries()
-    {
-        if (null !== $this->entries) {
-            return;
-        }
-
-        /** @var \Dpn\XmlSitemapBundle\Sitemap\Entry[] $entries */
-        $entries = array();
-
-        foreach ($this->generators as $generator) {
-            $entries = array_merge($entries, $generator->generate());
-        }
-
-        foreach ($entries as $entry) {
-            $entry->setDefaults($this->defaults);
-        }
-
-        $this->entries = $entries;
     }
 }

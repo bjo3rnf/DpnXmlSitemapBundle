@@ -17,67 +17,46 @@ class Entry
     /**
      * @var string
      */
-    protected $uri;
+    protected $url;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $lastMod;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $changeFreq;
 
     /**
-     * @var string
+     * @var float|null
      */
     protected $priority;
 
-    /**
-     * @var string
-     */
-    protected $scheme;
-
-    /**
-     * @var array
-     */
-    protected $defaults = array(
-        'scheme'     => 'http',
-        'priority'   => '0.5',
-        'changefreq' => 'weekly'
-    );
-
-    /**
-     * @param array $defaults
-     */
-    public function setDefaults(array $defaults = array())
+    public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
     {
-        $defaults = array_merge($this->defaults, $defaults);
+        $this->url = $url;
 
-        if (null === $this->getChangeFreq()) {
-            $this->setChangeFreq($defaults['changefreq']);
-        }
-
-        if (null === $this->getPriority()) {
-            $this->setPriority($defaults['priority']);
-        }
-
-        if (null === $this->getScheme()) {
-            $this->setScheme($defaults['scheme']);
-        }
+        $this->setLastMod($lastMod);
+        $this->setChangeFreq($changeFreq);
+        $this->setPriority($priority);
     }
 
     /**
-     * @param string $changeFreq
+     * @return string
      */
-    public function setChangeFreq($changeFreq)
+    public function getUrl()
     {
-        $changeFreq = strtolower($changeFreq);
+        return $this->url;
+    }
 
-        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
-            $this->changeFreq = $changeFreq;
-        }
+    /**
+     * @return null|string
+     */
+    public function getLastMod()
+    {
+        return $this->lastMod;
     }
 
     /**
@@ -89,9 +68,29 @@ class Entry
     }
 
     /**
+     * @return null|float
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param string $changeFreq
+     */
+    private function setChangeFreq($changeFreq)
+    {
+        $changeFreq = strtolower($changeFreq);
+
+        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
+            $this->changeFreq = $changeFreq;
+        }
+    }
+
+    /**
      * @param mixed $lastMod
      */
-    public function setLastMod($lastMod)
+    private function setLastMod($lastMod)
     {
         if ($lastMod instanceof \DateTime) {
             $this->lastMod = $lastMod->format('Y-m-d');
@@ -106,68 +105,15 @@ class Entry
     }
 
     /**
-     * @return null|string
-     */
-    public function getLastMod()
-    {
-        return $this->lastMod;
-    }
-
-    /**
      * @param string $priority
      */
-    public function setPriority($priority)
+    private function setPriority($priority)
     {
         if (true === is_numeric($priority)) {
             $priority = round(floatval($priority), 1);
             if (0 <= $priority && 1 >= $priority) {
-                $this->priority = (string) $priority;
+                $this->priority = $priority;
             }
         }
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
-
-    /**
-     * @param string $uri
-     * @param boolean $checkFormat
-     */
-    public function setUri($uri, $checkFormat = true)
-    {
-        if (true === $checkFormat) {
-            $this->uri = '/' . trim($uri, '/');
-        } else {
-            $this->uri = $uri;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getUri()
-    {
-        return $this->uri;
-    }
-
-    /**
-     * @param string $scheme
-     */
-    public function setScheme($scheme)
-    {
-        $this->scheme = $scheme;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getScheme()
-    {
-        return $this->scheme;
     }
 }
