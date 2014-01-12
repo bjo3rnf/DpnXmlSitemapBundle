@@ -86,7 +86,9 @@ class SitemapManager
             $entries = array_merge($entries, $generator->generate());
         }
 
-        return $this->entries = $entries;
+        $this->entries = $entries;
+
+        return $this->entries;
     }
 
     /**

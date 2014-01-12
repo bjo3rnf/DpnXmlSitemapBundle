@@ -61,9 +61,9 @@ class RouteOptionGenerator implements GeneratorInterface
 
             $entries[] = new Entry(
                 $url,
-                isset($options['lastmod']) ? $options['lastmod'] : null,
-                isset($options['changefreq']) ? $options['changefreq'] : null,
-                isset($options['priority']) ? $options['priority'] : null
+                true === isset($options['lastmod']) ? $options['lastmod'] : null,
+                true === isset($options['changefreq']) ? $options['changefreq'] : null,
+                true === isset($options['priority']) ? $options['priority'] : null
             );
         }
 
