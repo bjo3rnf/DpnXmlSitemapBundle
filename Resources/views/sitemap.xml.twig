@@ -3,8 +3,8 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {% for entry in entries %}
-    {% set changefreq = entry.changeFreq ?: default.changeFreq %}
-    {% set priority = entry.priority ?: default.priority %}
+    {% set changefreq = entry.changeFreq ?: default_changefreq %}
+    {% set priority = entry.priority ?: default_priority %}
     <url>
         <loc>{{ entry.url }}</loc>
         {% if changefreq %}

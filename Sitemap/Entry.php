@@ -22,25 +22,75 @@ class Entry
     /**
      * @var string|null
      */
-    protected $lastMod;
+    protected $lastMod = null;
 
     /**
      * @var string|null
      */
-    protected $changeFreq;
+    protected $changeFreq = null;
 
     /**
      * @var float|null
      */
-    protected $priority;
+    protected $priority = null;
+
+    /**
+     * @param mixed $lastMod
+     * @return string|null
+     */
+    public static function parseLastMod($lastMod)
+    {
+        if ($lastMod instanceof \DateTime) {
+            return $lastMod->format('Y-m-d');
+        }
+
+        if (1 === preg_match('/^\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}[\+|\-]\d{2}:\d{2}$/', $lastMod) ||
+            1 === preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $lastMod)
+        ) {
+            return $lastMod;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $priority
+     * @return float|null
+     */
+    public static function parsePriority($priority)
+    {
+        if (true === is_numeric($priority)) {
+            $priority = round(floatval($priority), 1);
+            if (0 <= $priority && 1 >= $priority) {
+                return $priority;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $changeFreq
+     * @return string|null
+     */
+    public static function parseChangeFreq($changeFreq)
+    {
+        $changeFreq = strtolower($changeFreq);
+
+        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
+            return $changeFreq;
+        }
+
+        return null;
+    }
 
     public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
     {
         $this->url = $url;
 
-        $this->setLastMod($lastMod);
-        $this->setChangeFreq($changeFreq);
-        $this->setPriority($priority);
+        $this->lastMod = self::parseLastMod($lastMod);
+        $this->changeFreq = self::parseChangeFreq($changeFreq);
+        $this->priority = self::parsePriority($priority);
     }
 
     /**
@@ -73,47 +123,5 @@ class Entry
     public function getPriority()
     {
         return $this->priority;
-    }
-
-    /**
-     * @param string $changeFreq
-     */
-    private function setChangeFreq($changeFreq)
-    {
-        $changeFreq = strtolower($changeFreq);
-
-        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
-            $this->changeFreq = $changeFreq;
-        }
-    }
-
-    /**
-     * @param mixed $lastMod
-     */
-    private function setLastMod($lastMod)
-    {
-        if ($lastMod instanceof \DateTime) {
-            $this->lastMod = $lastMod->format('Y-m-d');
-            return;
-        }
-
-        if (1 === preg_match('/^\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}[\+|\-]\d{2}:\d{2}$/', $lastMod) ||
-            1 === preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $lastMod)
-        ) {
-            $this->lastMod = $lastMod;
-        }
-    }
-
-    /**
-     * @param string $priority
-     */
-    private function setPriority($priority)
-    {
-        if (true === is_numeric($priority)) {
-            $priority = round(floatval($priority), 1);
-            if (0 <= $priority && 1 >= $priority) {
-                $this->priority = $priority;
-            }
-        }
     }
 }
