@@ -56,7 +56,7 @@ class SitemapController
     {
         if ($this->manager->getNumberOfSitemaps() > 1) {
             // redirect to /sitemap1.xml
-            return new RedirectResponse($this->router->generate('_dpn_xml_sitemap_number', array('number' => 1)));
+            return new RedirectResponse($this->router->generate('dpn_xml_sitemap_number', array('number' => 1)));
         }
 
         return $this->createResponse($this->manager->renderSitemap());
@@ -72,12 +72,12 @@ class SitemapController
 
         if (1 === $total) {
             // redirect to /sitemap.xml
-            return new RedirectResponse($this->router->generate('_dpn_xml_sitemap'));
+            return new RedirectResponse($this->router->generate('dpn_xml_sitemap'));
         }
 
         if ($number > $total) {
             // redirect to /sitemap{n}.xml
-            return new RedirectResponse($this->router->generate('_dpn_xml_sitemap_number', array('number' => $total)));
+            return new RedirectResponse($this->router->generate('dpn_xml_sitemap_number', array('number' => $total)));
         }
 
         return $this->createResponse($this->manager->renderSitemap($number));
