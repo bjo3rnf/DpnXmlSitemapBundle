@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<sitemapindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd"
+              xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     {% for number in 1..num_sitemaps if num_sitemaps > 1 %}
         <sitemap>
-            <loc>{{ app.request.getSchemeAndHttpHost }}/sitemap{{ number }}.xml</loc>
+            <loc>{{ host }}/sitemap{{ number }}.xml</loc>
         </sitemap>
     {% else %}
         <sitemap>
-            <loc>{{ app.request.getSchemeAndHttpHost }}/sitemap.xml</loc>
+            <loc>{{ host }}/sitemap.xml</loc>
         </sitemap>
     {% endfor %}
 </sitemapindex>

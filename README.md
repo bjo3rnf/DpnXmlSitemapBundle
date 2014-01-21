@@ -117,17 +117,17 @@ To expose a route to the sitemap add the option `sitemap` to your route definiti
 or annotation
 
 ```php
-    /**
-     * @Route("/find/me/in/sitemap", options={"sitemap" = {"priority" = 0.7, "changefreq" => "weekly", "check_format" => "true"}})
-     */
+/**
+ * @Route("/find/me/in/sitemap", options={"sitemap" = {"priority" = 0.7, "changefreq" => "weekly"}})
+ */
 ```
 
 or if you simply want to use the defaults:
 
 ```php
-    /**
-     * @Route("/find/me/in/sitemap", options={"sitemap" = true})
-     */
+/**
+ * @Route("/find/me/in/sitemap", options={"sitemap" = true})
+ */
 ```
 
 The generated sitemap is then available under the url /sitemap.xml and the bundle will throw a not found exception
@@ -157,22 +157,15 @@ dpn_xml_sitemap:
     http_cache: 3600
 ```
 
-### Check Format
-
-By default, there is a simple formatting check that will help prevent incorrect routes.  However, if you have a site
-that uses trailing / and you're sure the routes are correct, you may want to disable the check in the configuration and when
-you call the setUri method.
-
 ## Full Default Configuration
 
 ```yaml
 dpn_xml_sitemap:
-    http_cache:               ~
-    max_per_sitemap:          50000
-    check_format:             true
+    http_cache:         ~
+    max_per_sitemap:    50000
     defaults:
-        priority:             0.5
-        changefreq:           weekly
+        priority:       ~
+        changefreq:     ~
 ```
 
 ### Custom Generator

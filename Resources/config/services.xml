@@ -5,27 +5,25 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="dpn_xml_sitemap.controller.class">Dpn\XmlSitemapBundle\Controller\Controller</parameter>
-        <parameter key="dpn_xml_sitemap.manager.class">Dpn\XmlSitemapBundle\Manager\SitemapManager</parameter>
+        <parameter key="dpn_xml_sitemap.controller.class">Dpn\XmlSitemapBundle\Controller\SitemapController</parameter>
+        <parameter key="dpn_xml_sitemap.manager.class">Dpn\XmlSitemapBundle\Sitemap\SitemapManager</parameter>
         <parameter key="dpn_xml_sitemap.route_option_generator.class">Dpn\XmlSitemapBundle\Sitemap\RouteOptionGenerator</parameter>
     </parameters>
 
     <services>
         <service id="dpn_xml_sitemap.controller" class="%dpn_xml_sitemap.controller.class%">
             <argument type="service" id="dpn_xml_sitemap.manager" />
-            <argument type="service" id="templating" />
             <argument type="service" id="router" />
             <argument>%dpn_xml_sitemap.http_cache%</argument>
         </service>
         <service id="dpn_xml_sitemap.manager" class="%dpn_xml_sitemap.manager.class%">
             <argument>%dpn_xml_sitemap.defaults%</argument>
             <argument>%dpn_xml_sitemap.max_per_sitemap%</argument>
+            <argument type="service" id="templating" />
         </service>
         <service id="dpn_xml_sitemap.route_option_generator" class="%dpn_xml_sitemap.route_option_generator.class%">
             <argument type="service" id="router" />
-            <argument>%dpn_xml_sitemap.check_format%</argument>
             <tag name="dpn_xml_sitemap.generator" />
         </service>
     </services>
-
 </container>

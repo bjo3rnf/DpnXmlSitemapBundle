@@ -17,92 +17,88 @@ class Entry
     /**
      * @var string
      */
-    protected $uri;
+    protected $url;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $lastMod;
+    protected $lastMod = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $changeFreq;
+    protected $changeFreq = null;
 
     /**
-     * @var string
+     * @var float|null
      */
-    protected $priority;
-
-    /**
-     * @var string
-     */
-    protected $scheme;
-
-    /**
-     * @var array
-     */
-    protected $defaults = array(
-        'scheme'     => 'http',
-        'priority'   => '0.5',
-        'changefreq' => 'weekly'
-    );
-
-    /**
-     * @param array $defaults
-     */
-    public function setDefaults(array $defaults = array())
-    {
-        $defaults = array_merge($this->defaults, $defaults);
-
-        if (null === $this->getChangeFreq()) {
-            $this->setChangeFreq($defaults['changefreq']);
-        }
-
-        if (null === $this->getPriority()) {
-            $this->setPriority($defaults['priority']);
-        }
-
-        if (null === $this->getScheme()) {
-            $this->setScheme($defaults['scheme']);
-        }
-    }
-
-    /**
-     * @param string $changeFreq
-     */
-    public function setChangeFreq($changeFreq)
-    {
-        $changeFreq = strtolower($changeFreq);
-
-        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
-            $this->changeFreq = $changeFreq;
-        }
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getChangeFreq()
-    {
-        return $this->changeFreq;
-    }
+    protected $priority = null;
 
     /**
      * @param mixed $lastMod
+     * @return string|null
      */
-    public function setLastMod($lastMod)
+    public static function normalizeLastMod($lastMod)
     {
         if ($lastMod instanceof \DateTime) {
-            $this->lastMod = $lastMod->format('Y-m-d');
-            return;
+            return $lastMod->format('Y-m-d');
         }
 
         if (1 === preg_match('/^\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}[\+|\-]\d{2}:\d{2}$/', $lastMod) ||
             1 === preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $lastMod)
         ) {
-            $this->lastMod = $lastMod;
+            return $lastMod;
         }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $priority
+     * @return float|null
+     */
+    public static function normalizePriority($priority)
+    {
+        if (true === is_numeric($priority)) {
+            $priority = round(floatval($priority), 1);
+            if (0 <= $priority && 1 >= $priority) {
+                return $priority;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $changeFreq
+     * @return string|null
+     */
+    public static function normalizeChangeFreq($changeFreq)
+    {
+        $changeFreq = strtolower($changeFreq);
+
+        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
+            return $changeFreq;
+        }
+
+        return null;
+    }
+
+    public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
+    {
+        $this->url = $url;
+
+        $this->lastMod = self::normalizeLastMod($lastMod);
+        $this->changeFreq = self::normalizeChangeFreq($changeFreq);
+        $this->priority = self::normalizePriority($priority);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**
@@ -114,60 +110,18 @@ class Entry
     }
 
     /**
-     * @param string $priority
+     * @return null|string
      */
-    public function setPriority($priority)
+    public function getChangeFreq()
     {
-        if (true === is_numeric($priority)) {
-            $priority = round(floatval($priority), 1);
-            if (0 <= $priority && 1 >= $priority) {
-                $this->priority = (string) $priority;
-            }
-        }
+        return $this->changeFreq;
     }
 
     /**
-     * @return null|string
+     * @return null|float
      */
     public function getPriority()
     {
         return $this->priority;
-    }
-
-    /**
-     * @param string $uri
-     * @param boolean $checkFormat
-     */
-    public function setUri($uri, $checkFormat = true)
-    {
-        if (true === $checkFormat) {
-            $this->uri = '/' . trim($uri, '/');
-        } else {
-            $this->uri = $uri;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getUri()
-    {
-        return $this->uri;
-    }
-
-    /**
-     * @param string $scheme
-     */
-    public function setScheme($scheme)
-    {
-        $this->scheme = $scheme;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getScheme()
-    {
-        return $this->scheme;
     }
 }
