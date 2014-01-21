@@ -150,8 +150,8 @@ class SitemapManager
         return $this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig',
             array(
                 'entries' => $entries,
-                'default_priority' => Entry::parsePriority($this->defaults['priority']),
-                'default_changefreq' => Entry::parseChangeFreq($this->defaults['changefreq'])
+                'default_priority' => Entry::normalizePriority($this->defaults['priority']),
+                'default_changefreq' => Entry::normalizeChangeFreq($this->defaults['changefreq'])
             )
         );
     }

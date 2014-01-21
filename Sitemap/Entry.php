@@ -38,7 +38,7 @@ class Entry
      * @param mixed $lastMod
      * @return string|null
      */
-    public static function parseLastMod($lastMod)
+    public static function normalizeLastMod($lastMod)
     {
         if ($lastMod instanceof \DateTime) {
             return $lastMod->format('Y-m-d');
@@ -57,7 +57,7 @@ class Entry
      * @param mixed $priority
      * @return float|null
      */
-    public static function parsePriority($priority)
+    public static function normalizePriority($priority)
     {
         if (true === is_numeric($priority)) {
             $priority = round(floatval($priority), 1);
@@ -73,7 +73,7 @@ class Entry
      * @param mixed $changeFreq
      * @return string|null
      */
-    public static function parseChangeFreq($changeFreq)
+    public static function normalizeChangeFreq($changeFreq)
     {
         $changeFreq = strtolower($changeFreq);
 
@@ -88,9 +88,9 @@ class Entry
     {
         $this->url = $url;
 
-        $this->lastMod = self::parseLastMod($lastMod);
-        $this->changeFreq = self::parseChangeFreq($changeFreq);
-        $this->priority = self::parsePriority($priority);
+        $this->lastMod = self::normalizeLastMod($lastMod);
+        $this->changeFreq = self::normalizeChangeFreq($changeFreq);
+        $this->priority = self::normalizePriority($priority);
     }
 
     /**
