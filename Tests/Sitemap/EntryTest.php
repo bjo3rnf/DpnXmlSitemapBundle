@@ -9,117 +9,32 @@ use Dpn\XmlSitemapBundle\Sitemap\Entry;
  */
 class EntryTest extends \PHPUnit_Framework_TestCase
 {
-    protected $defaults = array(
-        'priority' => '0.5',
-        'changefreq' => 'weekly',
-        'scheme' => 'http'
-    );
-
-    public function testSetDefaults()
+    /**
+     * @dataProvider constructorProvider
+     */
+    public function testConstructor($url, $lastMod, $changeFreq, $priority, $expectedUrl, $expectedLastMod, $expectedChangeFreq, $expectedPriority)
     {
-        $entry = new Entry();
+        $entry = new Entry($url, $lastMod, $changeFreq, $priority);
 
-        $entry->setDefaults($this->defaults);
-        $this->assertEquals('weekly', $entry->getChangeFreq());
-        $this->assertEquals(0.5, $entry->getPriority());
-
-        $entry = new Entry();
-
-        $entry->setChangeFreq('yearly');
-        $entry->setDefaults($this->defaults);
-        $this->assertEquals('yearly', $entry->getChangeFreq());
-        $this->assertEquals(0.5, $entry->getPriority());
-
-        $entry = new Entry();
-
-        $entry->setPriority(0.1);
-        $entry->setDefaults($this->defaults);
-        $this->assertEquals('weekly', $entry->getChangeFreq());
-        $this->assertEquals(0.1, $entry->getPriority());
-
-        $entry = new Entry();
-
-        $entry->setDefaults($this->defaults);
-        $this->assertEquals('http', $entry->getScheme());
+        $this->assertSame($expectedUrl, $entry->getUrl());
+        $this->assertSame($expectedLastMod, $entry->getLastMod());
+        $this->assertSame($expectedChangeFreq, $entry->getChangeFreq());
+        $this->assertSame($expectedPriority, $entry->getPriority());
     }
 
-    public function testSetLastMod()
+    public function constructorProvider()
     {
-        $entry = new Entry();
-
-        $entry->setLastMod('foo');
-        $this->assertNull($entry->getLastMod());
-
-        $entry->setLastMod('2012-12-05');
-        $this->assertEquals('2012-12-05', $entry->getLastMod());
-
-        $entry->setLastMod(new \DateTime('2001-01-02'));
-        $this->assertEquals('2001-01-02', $entry->getLastMod());
-    }
-
-    public function testSetUri()
-    {
-        $entry = new Entry();
-
-        $entry->setUri('/foo');
-        $this->assertEquals('/foo', $entry->getUri());
-
-        $entry->setUri('foo');
-        $this->assertEquals('/foo', $entry->getUri());
-    }
-
-    public function testSetUriWithoutCheckFormat()
-    {
-        $entry = new Entry();
-
-        $entry->setUri('/foo', false);
-        $this->assertEquals('/foo', $entry->getUri());
-
-        $entry->setUri('/foo/', false);
-        $this->assertEquals('/foo/', $entry->getUri());
-
-        $entry->setUri('foo', false);
-        $this->assertEquals('foo', $entry->getUri());
-    }
-
-    public function testSetChangeFreq()
-    {
-        $entry = new Entry();
-
-        $entry->setChangeFreq('foo');
-        $this->assertNull($entry->getChangeFreq());
-
-        $entry->setChangeFreq('weekly');
-        $this->assertEquals('weekly', $entry->getChangeFreq());
-    }
-
-    public function testSetPriority()
-    {
-        $entry = new Entry();
-
-        $entry->setPriority(2.0);
-        $this->assertNull($entry->getPriority());
-
-        $entry->setPriority(-2.1);
-        $this->assertNull($entry->getPriority());
-
-        $entry->setPriority('foo');
-        $this->assertNull($entry->getPriority());
-
-        $entry->setPriority(0.5);
-        $this->assertEquals(0.5, $entry->getPriority());
-
-        $entry->setPriority('0.5');
-        $this->assertEquals(0.5, $entry->getPriority());
-    }
-
-    public function testSetScheme()
-    {
-        $entry = new Entry();
-
-        $entry->setScheme('https');
-        $entry->setDefaults($this->defaults);
-
-        $this->assertEquals('https', $entry->getScheme());
+        return array(
+            array('/', null, null, null, '/', null, null, null),
+            array('/', 'foo', 'bar', 'baz', '/', null, null, null),
+            array('/', new \DateTime('Nov 1, 2013'), null, null, '/', '2013-11-01', null, null),
+            array('/', '2013-11-01', null, null, '/', '2013-11-01', null, null),
+            array('/', '2004-12-23T18:00:15+00:00', null, null, '/', '2004-12-23T18:00:15+00:00', null, null),
+            array('/', null, 'monthly', null, '/', null, 'monthly', null),
+            array('/', null, null, 0.6, '/', null, null, 0.6),
+            array('/', null, null, '0.5', '/', null, null, 0.5),
+            array('/', null, null, '3.0', '/', null, null, null),
+            array('/', null, null, -1, '/', null, null, null)
+        );
     }
 }

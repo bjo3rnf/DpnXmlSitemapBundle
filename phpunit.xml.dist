@@ -8,12 +8,15 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
+         colors="true"
          bootstrap="./vendor/autoload.php"
         >
 
+    <!--
     <php>
         <server name="KERNEL_DIR" value="./Tests/Fixtures/App/" />
     </php>
+    -->
 
     <testsuites>
         <testsuite name="DpnXmlSitemapBundle Test Suite">
@@ -25,7 +28,10 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <directory>./Resources</directory>
                 <directory>./Tests</directory>
+                <directory>./vendor</directory>
+                <directory>./build</directory>
             </exclude>
         </whitelist>
     </filter>

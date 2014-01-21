@@ -2,7 +2,7 @@
 
 namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
 
-use Dpn\XmlSitemapBundle\Manager\SitemapManager;
+use Dpn\XmlSitemapBundle\Sitemap\SitemapManager;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -44,12 +44,12 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $manager2->getEntriesForSitemap(2));
 
         $entries = $manager2->getEntriesForSitemap(1);
-        $this->assertEquals('/foo/1', $entries[0]->getUri());
-        $this->assertEquals('/foo/5', $entries[4]->getUri());
+        $this->assertEquals('/foo/1', $entries[0]->getUrl());
+        $this->assertEquals('/foo/5', $entries[4]->getUrl());
 
         $entries = $manager2->getEntriesForSitemap(2);
-        $this->assertEquals('/foo/6', $entries[0]->getUri());
-        $this->assertEquals('/foo/10', $entries[4]->getUri());
+        $this->assertEquals('/foo/6', $entries[0]->getUrl());
+        $this->assertEquals('/foo/10', $entries[4]->getUrl());
 
         $manager3 = $this->getManager(13, 5);
         $this->assertCount(5, $manager3->getEntriesForSitemap(1));
@@ -57,16 +57,16 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $manager3->getEntriesForSitemap(3));
 
         $entries = $manager3->getEntriesForSitemap(1);
-        $this->assertEquals('/foo/1', $entries[0]->getUri());
-        $this->assertEquals('/foo/5', $entries[4]->getUri());
+        $this->assertEquals('/foo/1', $entries[0]->getUrl());
+        $this->assertEquals('/foo/5', $entries[4]->getUrl());
 
         $entries = $manager3->getEntriesForSitemap(2);
-        $this->assertEquals('/foo/6', $entries[0]->getUri());
-        $this->assertEquals('/foo/10', $entries[4]->getUri());
+        $this->assertEquals('/foo/6', $entries[0]->getUrl());
+        $this->assertEquals('/foo/10', $entries[4]->getUrl());
 
         $entries = $manager3->getEntriesForSitemap(3);
-        $this->assertEquals('/foo/11', $entries[0]->getUri());
-        $this->assertEquals('/foo/13', $entries[2]->getUri());
+        $this->assertEquals('/foo/11', $entries[0]->getUrl());
+        $this->assertEquals('/foo/13', $entries[2]->getUrl());
 
         $this->setExpectedException('\InvalidArgumentException');
         $manager3->getEntriesForSitemap(500);
@@ -75,19 +75,13 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param $numberOfEntries
      * @param $maxPerSitemap
-     *
-     * @return \Dpn\XmlSitemapBundle\Manager\SitemapManager
+     * @return SitemapManager
      */
     private function getManager($numberOfEntries, $maxPerSitemap)
     {
-        $defaults = array(
-            'priority' => '0.5',
-            'changefreq' => 'weekly'
-        );
-
-        $generator = new TestGenerator($numberOfEntries);
-        $manager = new SitemapManager($defaults, $maxPerSitemap);
-        $manager->addGenerator($generator);
+        $templating = $this->getMock('Symfony\Component\Templating\EngineInterface');
+        $manager = new SitemapManager(array(), $maxPerSitemap, $templating);
+        $manager->addGenerator(new TestGenerator($numberOfEntries));
 
         return $manager;
     }
