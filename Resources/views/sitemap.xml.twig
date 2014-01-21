@@ -3,15 +3,13 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {% for entry in entries %}
-    {% set changefreq = entry.changeFreq ?: default_changefreq %}
-    {% set priority = entry.priority ?: default_priority %}
     <url>
         <loc>{{ entry.url }}</loc>
-        {% if changefreq %}
-        <changefreq>{{ changefreq }}</changefreq>
+        {% if entry.changefreq %}
+        <changefreq>{{ entry.changefreq }}</changefreq>
         {% endif %}
-        {% if priority %}
-        <priority>{{ priority }}</priority>
+        {% if entry.priority %}
+        <priority>{{ entry.priority }}</priority>
         {% endif %}
         {% if entry.lastMod %}
         <lastmod>{{ entry.lastMod }}</lastmod>

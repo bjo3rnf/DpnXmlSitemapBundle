@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class RouteOptionGenerator implements GeneratorInterface
+class RouteOptionGenerator extends AbstractGenerator
 {
     /**
      * @var \Symfony\Component\Routing\RouterInterface
@@ -59,12 +59,25 @@ class RouteOptionGenerator implements GeneratorInterface
                 throw new \InvalidArgumentException(sprintf('The route "%s" cannot have the sitemap option because it requires parameters', $name));
             }
 
-            $entries[] = new Entry(
-                $url,
-                true === isset($options['lastmod']) ? $options['lastmod'] : null,
-                true === isset($options['changefreq']) ? $options['changefreq'] : null,
-                true === isset($options['priority']) ? $options['priority'] : null
-            );
+            if (true === isset($options['lastmod'])) {
+                $lastmod = $this->normalizeLastMod($options['lastmod']);
+            } else {
+                $lastmod = $this->defaults['lastmod'];
+            }
+
+            if (true === isset($options['changefreq'])) {
+                $changefreq = $this->normalizeChangeFreq($options['changefreq']);
+            } else {
+                $changefreq = $this->defaults['changefreq'];
+            }
+
+            if (true === isset($options['priority'])) {
+                $priority = $this->normalizePriority($options['priority']);
+            } else {
+                $priority = $this->defaults['priority'];
+            }
+
+            $entries[] = new Entry($url, $lastmod, $changefreq, $priority);
         }
 
         return $entries;
