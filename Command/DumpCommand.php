@@ -41,7 +41,6 @@ class DumpCommand extends ContainerAwareCommand
         $context = $this->getContainer()->get('router')->getContext();
         $context->setScheme($scheme);
         $context->setHost($matches[2]);
-        $context->setBaseUrl('/');
         $manager = $this->getContainer()->get('dpn_xml_sitemap.manager');
         $totalSitemaps = $manager->getNumberOfSitemaps();
 
