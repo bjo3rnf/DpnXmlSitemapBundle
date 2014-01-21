@@ -118,7 +118,7 @@ or annotation
 
 ```php
 /**
- * @Route("/find/me/in/sitemap", options={"sitemap" = {"priority" = 0.7, "changefreq" => "weekly"})
+ * @Route("/find/me/in/sitemap", options={"sitemap" = {"priority" = 0.7, "changefreq" => "weekly"}})
  */
 ```
 
@@ -156,12 +156,6 @@ You can enable default http caching for the sitemap.xml route by setting the num
 dpn_xml_sitemap:
     http_cache: 3600
 ```
-
-### Check Format
-
-By default, there is a simple formatting check that will help prevent incorrect routes.  However, if you have a site
-that uses trailing / and you're sure the routes are correct, you may want to disable the check in the configuration and when
-you call the setUri method.
 
 ## Full Default Configuration
 
