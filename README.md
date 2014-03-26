@@ -18,7 +18,7 @@ Add DpnXmlSitemapBundle in your composer.json:
 ```json
 {
     "require": {
-        "dpn/xml-sitemap-bundle": "*"
+        "dpn/xml-sitemap-bundle": "dev-master"
     }
 }
 ```
