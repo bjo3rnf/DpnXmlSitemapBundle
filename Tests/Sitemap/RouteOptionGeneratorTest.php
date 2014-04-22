@@ -53,7 +53,7 @@ class RouteOptionGeneratorTest extends \PHPUnit_Framework_TestCase
             }
         );
 
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException('\InvalidArgumentException', 'The route "foo" cannot have the sitemap option because it requires parameters');
         $generator = new RouteOptionGenerator($router);
         $generator->generate();
     }
