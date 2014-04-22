@@ -44,12 +44,12 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $manager2->getEntriesForSitemap(2));
 
         $entries = $manager2->getEntriesForSitemap(1);
-        $this->assertEquals('/foo/1', $entries[0]->getUrl());
-        $this->assertEquals('/foo/5', $entries[4]->getUrl());
+        $this->assertEquals('http://localhost/foo/1', $entries[0]->getUrl());
+        $this->assertEquals('http://localhost/foo/5', $entries[4]->getUrl());
 
         $entries = $manager2->getEntriesForSitemap(2);
-        $this->assertEquals('/foo/6', $entries[0]->getUrl());
-        $this->assertEquals('/foo/10', $entries[4]->getUrl());
+        $this->assertEquals('http://localhost/foo/6', $entries[0]->getUrl());
+        $this->assertEquals('http://localhost/foo/10', $entries[4]->getUrl());
 
         $manager3 = $this->getManager(13, 5);
         $this->assertCount(5, $manager3->getEntriesForSitemap(1));
@@ -57,16 +57,16 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $manager3->getEntriesForSitemap(3));
 
         $entries = $manager3->getEntriesForSitemap(1);
-        $this->assertEquals('/foo/1', $entries[0]->getUrl());
-        $this->assertEquals('/foo/5', $entries[4]->getUrl());
+        $this->assertEquals('http://localhost/foo/1', $entries[0]->getUrl());
+        $this->assertEquals('http://localhost/foo/5', $entries[4]->getUrl());
 
         $entries = $manager3->getEntriesForSitemap(2);
-        $this->assertEquals('/foo/6', $entries[0]->getUrl());
-        $this->assertEquals('/foo/10', $entries[4]->getUrl());
+        $this->assertEquals('http://localhost/foo/6', $entries[0]->getUrl());
+        $this->assertEquals('http://localhost/foo/10', $entries[4]->getUrl());
 
         $entries = $manager3->getEntriesForSitemap(3);
-        $this->assertEquals('/foo/11', $entries[0]->getUrl());
-        $this->assertEquals('/foo/13', $entries[2]->getUrl());
+        $this->assertEquals('http://localhost/foo/11', $entries[0]->getUrl());
+        $this->assertEquals('http://localhost/foo/13', $entries[2]->getUrl());
 
         $this->setExpectedException('\InvalidArgumentException');
         $manager3->getEntriesForSitemap(500);

@@ -22,19 +22,26 @@ class EntryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedPriority, $entry->getPriority());
     }
 
+    public function testInvalidUrl()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'The url "localhost" is not absolute.');
+
+        $entry = new Entry('localhost');
+    }
+
     public function constructorProvider()
     {
         return array(
-            array('/', null, null, null, '/', null, null, null),
-            array('/', 'foo', 'bar', 'baz', '/', null, null, null),
-            array('/', new \DateTime('Nov 1, 2013'), null, null, '/', '2013-11-01', null, null),
-            array('/', '2013-11-01', null, null, '/', '2013-11-01', null, null),
-            array('/', '2004-12-23T18:00:15+00:00', null, null, '/', '2004-12-23T18:00:15+00:00', null, null),
-            array('/', null, 'monthly', null, '/', null, 'monthly', null),
-            array('/', null, null, 0.6, '/', null, null, 0.6),
-            array('/', null, null, '0.5', '/', null, null, 0.5),
-            array('/', null, null, '3.0', '/', null, null, null),
-            array('/', null, null, -1, '/', null, null, null)
+            array('http://localhost/', null, null, null, 'http://localhost/', null, null, null),
+            array('http://localhost/', 'foo', 'bar', 'baz', 'http://localhost/', null, null, null),
+            array('http://localhost/', new \DateTime('Nov 1, 2013'), null, null, 'http://localhost/', '2013-11-01', null, null),
+            array('http://localhost/', '2013-11-01', null, null, 'http://localhost/', '2013-11-01', null, null),
+            array('http://localhost/', '2004-12-23T18:00:15+00:00', null, null, 'http://localhost/', '2004-12-23T18:00:15+00:00', null, null),
+            array('http://localhost/', null, 'monthly', null, 'http://localhost/', null, 'monthly', null),
+            array('http://localhost/', null, null, 0.6, 'http://localhost/', null, null, 0.6),
+            array('http://localhost/', null, null, '0.5', 'http://localhost/', null, null, 0.5),
+            array('http://localhost/', null, null, '3.0', 'http://localhost/', null, null, null),
+            array('http://localhost/', null, null, -1, 'http://localhost/', null, null, null)
         );
     }
 }
