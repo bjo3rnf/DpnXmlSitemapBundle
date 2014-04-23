@@ -86,6 +86,12 @@ class Entry
 
     public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
     {
+        $components = parse_url($url);
+
+        if (!isset($components['scheme']) || !isset($components['host'])) {
+            throw new \InvalidArgumentException(sprintf('The url "%s" is not absolute.', $url));
+        }
+
         $this->url = $url;
 
         $this->lastMod = self::normalizeLastMod($lastMod);

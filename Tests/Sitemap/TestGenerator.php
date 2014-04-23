@@ -22,7 +22,7 @@ class TestGenerator implements GeneratorInterface
         $entries = array();
 
         for ($i = 1; $i <= $this->numberOfEntries; $i++) {
-            $entry = new Entry(sprintf('/foo/%s', $i));
+            $entry = new Entry(sprintf('http://localhost/foo/%s', $i));
             $entries[] = $entry;
         }
 
