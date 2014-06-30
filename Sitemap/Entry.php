@@ -22,68 +22,24 @@ class Entry
     /**
      * @var string|null
      */
-    protected $lastMod = null;
+    protected $lastMod;
 
     /**
      * @var string|null
      */
-    protected $changeFreq = null;
+    protected $changeFreq;
 
     /**
      * @var float|null
      */
-    protected $priority = null;
+    protected $priority;
 
     /**
-     * @param mixed $lastMod
-     * @return string|null
+     * @param string $url
+     * @param string|null $lastMod
+     * @param string|null $changeFreq
+     * @param float|null  $priority
      */
-    public static function normalizeLastMod($lastMod)
-    {
-        if ($lastMod instanceof \DateTime) {
-            return $lastMod->format('Y-m-d');
-        }
-
-        if (1 === preg_match('/^\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}[\+|\-]\d{2}:\d{2}$/', $lastMod) ||
-            1 === preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $lastMod)
-        ) {
-            return $lastMod;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param mixed $priority
-     * @return float|null
-     */
-    public static function normalizePriority($priority)
-    {
-        if (true === is_numeric($priority)) {
-            $priority = round(floatval($priority), 1);
-            if (0 <= $priority && 1 >= $priority) {
-                return $priority;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param mixed $changeFreq
-     * @return string|null
-     */
-    public static function normalizeChangeFreq($changeFreq)
-    {
-        $changeFreq = strtolower($changeFreq);
-
-        if (in_array($changeFreq, array('always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'))) {
-            return $changeFreq;
-        }
-
-        return null;
-    }
-
     public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
     {
         $components = parse_url($url);
@@ -94,9 +50,9 @@ class Entry
 
         $this->url = $url;
 
-        $this->lastMod = self::normalizeLastMod($lastMod);
-        $this->changeFreq = self::normalizeChangeFreq($changeFreq);
-        $this->priority = self::normalizePriority($priority);
+        $this->lastMod = $lastMod;
+        $this->changeFreq = $changeFreq;
+        $this->priority = $priority;
     }
 
     /**
