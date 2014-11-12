@@ -11,13 +11,21 @@
 
 namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
 
+use Dpn\XmlSitemapBundle\Sitemap\Entry;
+use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
 use Dpn\XmlSitemapBundle\Sitemap\SitemapManager;
+use Mockery as m;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class ManagerTest extends \PHPUnit_Framework_TestCase
+class SitemapManagerTest extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testGetEntries()
     {
         $manager = $this->getManager(10, 50000);
@@ -81,17 +89,70 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager3->getEntriesForSitemap(500);
     }
 
+    public function testRenderSitemap()
+    {
+        $templating = m::mock('Symfony\Component\Templating\EngineInterface');
+        $templating
+            ->shouldReceive('render')
+            ->twice()
+            ->with('DpnXmlSitemapBundle::sitemap.xml.twig', m::type('array'))
+            ->andReturn('rendered template');
+
+        $manager = new SitemapManager(array(), 1, $templating);
+        $manager->addGenerator(new TestGenerator(2));
+
+        $this->assertSame('rendered template', $manager->renderSitemap());
+        $this->assertSame('rendered template', $manager->renderSitemap(2));
+    }
+
+    public function testRenderSitemapIndex()
+    {
+        $templating = m::mock('Symfony\Component\Templating\EngineInterface');
+        $templating
+            ->shouldReceive('render')
+            ->once()
+            ->with('DpnXmlSitemapBundle::sitemap_index.xml.twig', array('num_sitemaps' => 2, 'host' => 'http://localhost'))
+            ->andReturn('rendered template');
+
+        $manager = new SitemapManager(array(), 1, $templating);
+        $manager->addGenerator(new TestGenerator(2));
+
+        $this->assertSame('rendered template', $manager->renderSitemapIndex('http://localhost'));
+    }
+
     /**
      * @param $numberOfEntries
      * @param $maxPerSitemap
+     *
      * @return SitemapManager
      */
     private function getManager($numberOfEntries, $maxPerSitemap)
     {
-        $templating = $this->getMock('Symfony\Component\Templating\EngineInterface');
-        $manager = new SitemapManager(array(), $maxPerSitemap, $templating);
+        $manager = new SitemapManager(array(), $maxPerSitemap, m::mock('Symfony\Component\Templating\EngineInterface'));
         $manager->addGenerator(new TestGenerator($numberOfEntries));
 
         return $manager;
+    }
+}
+
+class TestGenerator implements GeneratorInterface
+{
+    protected $numberOfEntries;
+
+    public function __construct($numberOfEntries)
+    {
+        $this->numberOfEntries = $numberOfEntries;
+    }
+
+    public function generate()
+    {
+        $entries = array();
+
+        for ($i = 1; $i <= $this->numberOfEntries; $i++) {
+            $entry = new Entry(sprintf('http://localhost/foo/%s', $i));
+            $entries[] = $entry;
+        }
+
+        return $entries;
     }
 }

@@ -116,8 +116,10 @@ class SitemapManager
     }
 
     /**
-     * @param  int                                   $number
+     * @param int $number
+     *
      * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
+     *
      * @throws \InvalidArgumentException
      */
     public function getEntriesForSitemap($number)
@@ -144,11 +146,7 @@ class SitemapManager
      */
     public function renderSitemap($number = null)
     {
-        if (null === $number) {
-            $entries = $this->getSitemapEntries();
-        } else {
-            $entries = $this->getEntriesForSitemap($number);
-        }
+        $entries = null === $number ? $this->getSitemapEntries() : $this->getEntriesForSitemap($number);
 
         return $this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig',
             array(
