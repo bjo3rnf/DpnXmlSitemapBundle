@@ -39,5 +39,4 @@ class GeneratorCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('addGenerator', array(new Reference($id)));
         }
     }
-
 }

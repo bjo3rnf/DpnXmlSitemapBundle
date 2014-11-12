@@ -32,6 +32,7 @@ class RouteOptionGenerator implements GeneratorInterface
 
     /**
      * @return Entry[]
+     *
      * @throws \InvalidArgumentException
      */
     public function generate()

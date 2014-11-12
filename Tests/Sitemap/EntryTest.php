@@ -42,7 +42,7 @@ class EntryTest extends \PHPUnit_Framework_TestCase
             array('http://localhost/', null, null, 0.6, 'http://localhost/', null, null, 0.6),
             array('http://localhost/', null, null, '0.5', 'http://localhost/', null, null, 0.5),
             array('http://localhost/', null, null, '3.0', 'http://localhost/', null, null, null),
-            array('http://localhost/', null, null, -1, 'http://localhost/', null, null, null)
+            array('http://localhost/', null, null, -1, 'http://localhost/', null, null, null),
         );
     }
 }

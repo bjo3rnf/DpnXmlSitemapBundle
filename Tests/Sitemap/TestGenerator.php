@@ -2,8 +2,8 @@
 
 namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
 
-use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
 use Dpn\XmlSitemapBundle\Sitemap\Entry;
+use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -28,5 +28,4 @@ class TestGenerator implements GeneratorInterface
 
         return $entries;
     }
-
 }

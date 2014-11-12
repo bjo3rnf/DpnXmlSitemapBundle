@@ -25,7 +25,7 @@ class SitemapManager
     protected $defaults;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxPerSitemap;
 
@@ -46,7 +46,7 @@ class SitemapManager
 
     /**
      * @param array           $defaults
-     * @param integer         $maxPerSitemap
+     * @param int             $maxPerSitemap
      * @param EngineInterface $templating
      */
     public function __construct(array $defaults, $maxPerSitemap, EngineInterface $templating)
@@ -54,7 +54,7 @@ class SitemapManager
         $this->defaults = array_merge(
             array(
                 'priority' => null,
-                'changefreq' => null
+                'changefreq' => null,
             ),
             $defaults
         );
@@ -92,7 +92,7 @@ class SitemapManager
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function countSitemapEntries()
     {
@@ -100,7 +100,7 @@ class SitemapManager
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getNumberOfSitemaps()
     {
@@ -114,7 +114,7 @@ class SitemapManager
     }
 
     /**
-     * @param $number
+     * @param  int                                   $number
      * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
      * @throws \InvalidArgumentException
      */
@@ -136,7 +136,8 @@ class SitemapManager
     }
 
     /**
-     * @param integer|null $number
+     * @param int|null $number
+     *
      * @return string
      */
     public function renderSitemap($number = null)
@@ -151,20 +152,21 @@ class SitemapManager
             array(
                 'entries' => $entries,
                 'default_priority' => Entry::normalizePriority($this->defaults['priority']),
-                'default_changefreq' => Entry::normalizeChangeFreq($this->defaults['changefreq'])
+                'default_changefreq' => Entry::normalizeChangeFreq($this->defaults['changefreq']),
             )
         );
     }
 
     /**
      * @param string $host
+     *
      * @return string
      */
     public function renderSitemapIndex($host)
     {
         return $this->templating->render('DpnXmlSitemapBundle::sitemap_index.xml.twig', array(
                 'num_sitemaps' => $this->getNumberOfSitemaps(),
-                'host' => $host
+                'host' => $host,
             )
         );
     }

@@ -36,6 +36,7 @@ class Entry
 
     /**
      * @param mixed $lastMod
+     *
      * @return string|null
      */
     public static function normalizeLastMod($lastMod)
@@ -55,6 +56,7 @@ class Entry
 
     /**
      * @param mixed $priority
+     *
      * @return float|null
      */
     public static function normalizePriority($priority)
@@ -71,6 +73,7 @@ class Entry
 
     /**
      * @param mixed $changeFreq
+     *
      * @return string|null
      */
     public static function normalizeChangeFreq($changeFreq)
@@ -84,6 +87,12 @@ class Entry
         return null;
     }
 
+    /**
+     * @param string      $url
+     * @param null|string $lastMod
+     * @param null|string $changeFreq
+     * @param null|float  $priority
+     */
     public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
     {
         $components = parse_url($url);

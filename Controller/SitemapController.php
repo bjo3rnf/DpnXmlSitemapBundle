@@ -33,14 +33,14 @@ class SitemapController
     protected $router;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $httpCache;
 
     /**
      * @param \Dpn\XmlSitemapBundle\Sitemap\SitemapManager $manager
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param integer $httpCache
+     * @param \Symfony\Component\Routing\RouterInterface   $router
+     * @param int                                          $httpCache
      */
     public function __construct(SitemapManager $manager, RouterInterface $router, $httpCache = null)
     {
@@ -63,7 +63,8 @@ class SitemapController
     }
 
     /**
-     * @param integer $number
+     * @param int $number
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function sitemapNumberAction($number)
@@ -85,6 +86,7 @@ class SitemapController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function sitemapIndexAction(Request $request)
@@ -94,6 +96,7 @@ class SitemapController
 
     /**
      * @param string $template
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function createResponse($template)
