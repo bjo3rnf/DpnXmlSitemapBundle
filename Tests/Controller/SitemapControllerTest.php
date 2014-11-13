@@ -26,7 +26,7 @@ class SitemapControllerTest extends WebTestCase
         $response = $client->getResponse();
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(86400, $response->getTtl());
+        $this->assertLessThanOrEqual(86400, $response->getTtl());
         $this->assertContains('http://localhost/sitemap.xml', $response->getContent());
     }
 
@@ -38,6 +38,7 @@ class SitemapControllerTest extends WebTestCase
         $response = $client->getResponse();
 
         $this->assertSame(200, $response->getStatusCode());
+        $this->assertNull($response->getTtl());
         $this->assertContains('http://localhost/sitemap1.xml', $response->getContent());
         $this->assertContains('http://localhost/sitemap2.xml', $response->getContent());
     }
@@ -50,7 +51,7 @@ class SitemapControllerTest extends WebTestCase
         $response = $client->getResponse();
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(86400, $response->getTtl());
+        $this->assertLessThanOrEqual(86400, $response->getTtl());
         $this->assertContains('http://localhost/bar', $response->getContent());
         $this->assertNotContains('http://localhost/foo', $response->getContent());
     }
@@ -63,6 +64,7 @@ class SitemapControllerTest extends WebTestCase
         $response = $client->getResponse();
 
         $this->assertSame(200, $response->getStatusCode());
+        $this->assertNull($response->getTtl());
         $this->assertContains('http://localhost/foo/1', $response->getContent());
         $this->assertContains('http://localhost/foo/6', $response->getContent());
         $this->assertNotContains('http://localhost/bar', $response->getContent());

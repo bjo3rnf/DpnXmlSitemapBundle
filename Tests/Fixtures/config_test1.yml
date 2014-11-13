@@ -9,4 +9,5 @@ services:
             - { name: dpn_xml_sitemap.generator }
 
 dpn_xml_sitemap:
+    http_cache: ~
     max_per_sitemap: 6
