@@ -11,7 +11,7 @@
     </parameters>
 
     <services>
-        <service id="dpn_xml_sitemap.controller" class="%dpn_xml_sitemap.controller.class%">
+        <service id="dpn_xml_sitemap.controller" class="%dpn_xml_sitemap.controller.class%" public="false">
             <argument type="service" id="dpn_xml_sitemap.manager" />
             <argument type="service" id="router" />
             <argument>%dpn_xml_sitemap.http_cache%</argument>
@@ -21,7 +21,7 @@
             <argument>%dpn_xml_sitemap.max_per_sitemap%</argument>
             <argument type="service" id="templating" />
         </service>
-        <service id="dpn_xml_sitemap.route_option_generator" class="%dpn_xml_sitemap.route_option_generator.class%">
+        <service id="dpn_xml_sitemap.route_option_generator" class="%dpn_xml_sitemap.route_option_generator.class%" public="false">
             <argument type="service" id="router" />
             <tag name="dpn_xml_sitemap.generator" />
         </service>
