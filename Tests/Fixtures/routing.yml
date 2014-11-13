@@ -1,0 +1,9 @@
+DpnXmlSitemapBundle:
+    resource: "@DpnXmlSitemapBundle/Resources/config/routing.xml"
+
+foo:
+    path: /foo
+
+bar:
+    path: /bar
+    options: { sitemap: true }

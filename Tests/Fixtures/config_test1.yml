@@ -1,0 +1,12 @@
+imports:
+    - { resource: config_test.yml }
+
+services:
+    test_generator:
+        class: Dpn\XmlSitemapBundle\Tests\Fixtures\TestGenerator
+        arguments: [10]
+        tags:
+            - { name: dpn_xml_sitemap.generator }
+
+dpn_xml_sitemap:
+    max_per_sitemap: 6

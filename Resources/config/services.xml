@@ -11,7 +11,7 @@
     </parameters>
 
     <services>
-        <service id="dpn_xml_sitemap.controller" class="%dpn_xml_sitemap.controller.class%" public="false">
+        <service id="dpn_xml_sitemap.controller" class="%dpn_xml_sitemap.controller.class%">
             <argument type="service" id="dpn_xml_sitemap.manager" />
             <argument type="service" id="router" />
             <argument>%dpn_xml_sitemap.http_cache%</argument>

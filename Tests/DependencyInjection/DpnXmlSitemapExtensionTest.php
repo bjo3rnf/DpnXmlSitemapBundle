@@ -38,7 +38,7 @@ class DpnXmlSitemapExtensionTest extends AbstractExtensionTestCase
         $this->load(array(
                 'http_cache' => 86400,
                 'max_per_sitemap' => 100,
-                'defaults' => array('priority' => 1, 'changefreq' => 'weekly')
+                'defaults' => array('priority' => 1, 'changefreq' => 'weekly'),
             ));
         $this->compile();
 

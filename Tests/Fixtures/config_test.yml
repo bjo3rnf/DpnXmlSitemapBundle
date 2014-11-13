@@ -1,0 +1,10 @@
+dpn_xml_sitemap:
+    http_cache: 86400
+
+framework:
+    secret: xxxxxxxxxx
+    router: { resource: "%kernel.root_dir%/routing.yml" }
+    templating: { engines: ['twig'] }
+    test:   ~
+    session:
+        storage_id: session.storage.mock_file
