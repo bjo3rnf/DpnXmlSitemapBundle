@@ -27,6 +27,7 @@ class DpnXmlSitemapExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('dpn_xml_sitemap.controller');
         $this->assertContainerBuilderHasService('dpn_xml_sitemap.manager');
         $this->assertContainerBuilderHasService('dpn_xml_sitemap.route_option_generator');
+        $this->assertContainerBuilderHasService('dpn_xml_sitemap.dump_command');
 
         $this->assertContainerBuilderHasParameter('dpn_xml_sitemap.defaults', array('priority' => null, 'changefreq' => null));
         $this->assertContainerBuilderHasParameter('dpn_xml_sitemap.http_cache', null);
@@ -45,6 +46,7 @@ class DpnXmlSitemapExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('dpn_xml_sitemap.controller');
         $this->assertContainerBuilderHasService('dpn_xml_sitemap.manager');
         $this->assertContainerBuilderHasService('dpn_xml_sitemap.route_option_generator');
+        $this->assertContainerBuilderHasService('dpn_xml_sitemap.dump_command');
 
         $this->assertContainerBuilderHasParameter('dpn_xml_sitemap.defaults', array('priority' => 1, 'changefreq' => 'weekly'));
         $this->assertContainerBuilderHasParameter('dpn_xml_sitemap.http_cache', 86400);

@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="dpn_xml_sitemap.controller.class">Dpn\XmlSitemapBundle\Controller\SitemapController</parameter>
+        <parameter key="dpn_xml_sitemap.dump_command.class">Dpn\XmlSitemapBundle\Command\DumpCommand</parameter>
         <parameter key="dpn_xml_sitemap.manager.class">Dpn\XmlSitemapBundle\Sitemap\SitemapManager</parameter>
         <parameter key="dpn_xml_sitemap.route_option_generator.class">Dpn\XmlSitemapBundle\Sitemap\RouteOptionGenerator</parameter>
     </parameters>
@@ -15,6 +16,12 @@
             <argument type="service" id="dpn_xml_sitemap.manager" />
             <argument type="service" id="router" />
             <argument>%dpn_xml_sitemap.http_cache%</argument>
+        </service>
+        <service id="dpn_xml_sitemap.dump_command" class="%dpn_xml_sitemap.dump_command.class%">
+            <argument type="service" id="dpn_xml_sitemap.manager" />
+            <argument type="service" id="router" />
+            <argument>%kernel.root_dir%</argument>
+            <tag name="console.command" />
         </service>
         <service id="dpn_xml_sitemap.manager" class="%dpn_xml_sitemap.manager.class%">
             <argument>%dpn_xml_sitemap.defaults%</argument>
