@@ -20,17 +20,16 @@
         "symfony/framework-bundle"  : "~2.0",
         "twig/twig"                 : "~1.12"
     },
-    "autoload": {
-        "psr-0": { "Dpn\\XmlSitemapBundle": "" }
+    "require-dev": {
+        "mockery/mockery": "~0.9",
+        "matthiasnoback/symfony-dependency-injection-test": "~0.7"
     },
-    "target-dir": "Dpn/XmlSitemapBundle",
+    "autoload": {
+        "psr-4": { "Dpn\\XmlSitemapBundle\\": "" }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.x-dev"
         }
-    },
-    "require-dev": {
-        "mockery/mockery": "~0.9",
-        "matthiasnoback/symfony-dependency-injection-test": "~0.7"
     }
 }
