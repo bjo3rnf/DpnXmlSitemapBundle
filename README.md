@@ -31,7 +31,8 @@ your own generators to provide URLs. The sitemap(s) generated follow the
     }
     ```
 
-3. Register the routing in `app/config/routing.yml`
+3. Register the routing in `app/config/routing.yml` *(this step is optional if using the console
+command to pre-generate the sitemaps)*
 
     ```yaml
     DpnXmlSitemapBundle:
@@ -70,7 +71,7 @@ a custom generator (see below).
 
 For more complex routes that have parameters, you must create a custom generator.
 
-1. Create a generator class that implements the `Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface` interface.
+1. Create a generator class that implements `Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface`.
 This class must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Entry` objects.
 
     ```php
@@ -126,6 +127,26 @@ seconds in your config:
 dpn_xml_sitemap:
     http_cache: 3600
 ```
+
+### Console Dump Command
+
+The `dpn:xml-sitemap:dump` command is available to pre-generate sitemap.xml files:
+
+```
+Usage:
+ dpn:xml-sitemap:dump [--target="..."] host
+
+Arguments:
+ host      The full hostname for your website (ie http://www.google.com)
+
+Options:
+ --target  Override the target directory to dump sitemap(s) in
+
+Help:
+ Dumps your sitemap(s) to the filesystem (defaults to web/)
+```
+
+**NOTE**: The command requires Symfony 2.4+.
 
 ## Full Default Configuration
 

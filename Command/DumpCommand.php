@@ -44,7 +44,7 @@ class DumpCommand extends Command
     {
         $this
             ->setName('dpn:xml-sitemap:dump')
-            ->setDescription('Dumps your sitemap(s) and sitemap.xml to the filesystem (defaults to web/)')
+            ->setDescription('Dumps your sitemap(s) to the filesystem (defaults to web/)')
             ->addArgument('host', InputArgument::REQUIRED, 'The full hostname for your website (ie http://www.google.com).')
             ->addOption('target', null, InputOption::VALUE_REQUIRED, 'Override the target directory to dump sitemap(s) in.')
         ;
