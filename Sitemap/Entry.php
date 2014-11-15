@@ -92,7 +92,7 @@ class Entry
             throw new \InvalidArgumentException(sprintf('The url "%s" is not absolute.', $url));
         }
 
-        $this->url = $url;
+        $this->url = htmlspecialchars($url);
 
         $this->lastMod = self::normalizeLastMod($lastMod);
         $this->changeFreq = self::normalizeChangeFreq($changeFreq);
