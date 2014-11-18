@@ -39,7 +39,7 @@ class RouteOptionGenerator implements GeneratorInterface
      */
     public function generate()
     {
-        $urls = new UrlSet();
+        $urlSet = new UrlSet();
         $collection = $this->router->getRouteCollection();
 
         foreach ($collection->all() as $name => $route) {
@@ -56,19 +56,19 @@ class RouteOptionGenerator implements GeneratorInterface
             }
 
             try {
-                $url = $this->router->generate($name, array(), true);
+                $loc = $this->router->generate($name, array(), true);
             } catch (MissingMandatoryParametersException $e) {
                 throw new \InvalidArgumentException(sprintf('The route "%s" cannot have the sitemap option because it requires parameters', $name));
             }
 
-            $urls->add(
-                $url,
+            $urlSet->add(
+                $loc,
                 true === isset($options['lastmod']) ? $options['lastmod'] : null,
                 true === isset($options['changefreq']) ? $options['changefreq'] : null,
                 true === isset($options['priority']) ? $options['priority'] : null
             );
         }
 
-        return $urls;
+        return $urlSet;
     }
 }
