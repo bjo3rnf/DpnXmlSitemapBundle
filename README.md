@@ -72,23 +72,23 @@ a custom generator (see below).
 For more complex routes that have parameters, you must create a custom generator.
 
 1. Create a generator class that implements `Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface`.
-This class must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Entry` objects.
+This class must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Url` objects.
 
     ```php
-    use Dpn\XmlSitemapBundle\Sitemap\Entry;
+    use Dpn\XmlSitemapBundle\Sitemap\Url;
     use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
 
     class MySitemapGenerator implements GeneratorInterface
     {
         public function generate()
         {
-            $entries = array();
+            $urls = array();
 
-            $entries[] = new Entry('http://example.com/foobar'); // must be absolute URL
+            $urls[] = new Url('http://example.com/foobar'); // must be absolute URL
 
-            // add more entries - perhaps fetched from database
+            // add more urls - perhaps fetched from database
 
-            return $entries;
+            return $urls;
         }
     }
     ```
@@ -105,13 +105,13 @@ This class must have a `generate()` method that returns an array of `Dpn\XmlSite
 
 ### Sitemap Index
 
-According to [sitemaps.org](http://www.sitemaps.org/protocol.html#index) the maximum number of entries a `sitemap.xml`
-may have is 50,000.  When the number of sitemap entries exceeds this, the entries are split across multiple sitemaps
+According to [sitemaps.org](http://www.sitemaps.org/protocol.html#index) the maximum number of urls a `sitemap.xml`
+may have is 50,000.  When the number of sitemap urls exceeds this, the urls are split across multiple sitemaps
 (ie `/sitemap1.xml`,`/sitemap2.xml`...`/sitemapN.xml`).
 
 A sitemap index is accessible at `/sitemap_index.xml`.
 
-The maximum entries per sitemap is configurable:
+The maximum urls per sitemap is configurable:
 
 ```yaml
 dpn_xml_sitemap:
@@ -158,10 +158,10 @@ dpn_xml_sitemap:
     # The length of time (in seconds) to cache the sitemap/sitemap_index xml\'s (a reverse proxy is required)
     http_cache:      ~
 
-    # The number of url entries in a single sitemap
+    # The number of urls in a single sitemap
     max_per_sitemap: 50000
 
-    # The default options for sitemap URL entries to be used if not overridden
+    # The default options for sitemap urls to be used if not overridden
     defaults:
 
         # Value between 0.0 and 1.0 or null for sitemap protocol default

@@ -2,19 +2,19 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
         xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{% for entry in entries %}
-    {% set changefreq = entry.changeFreq ?: default_changefreq %}
-    {% set priority = entry.priority ?: default_priority %}
+{% for url in urls %}
+    {% set changefreq = url.changeFreq ?: default_changefreq %}
+    {% set priority = url.priority ?: default_priority %}
     <url>
-        <loc>{{ entry.url }}</loc>
+        <loc>{{ url.loc }}</loc>
         {% if changefreq %}
         <changefreq>{{ changefreq }}</changefreq>
         {% endif %}
         {% if priority %}
         <priority>{{ priority }}</priority>
         {% endif %}
-        {% if entry.lastMod %}
-        <lastmod>{{ entry.lastMod }}</lastmod>
+        {% if url.lastMod %}
+        <lastmod>{{ url.lastMod }}</lastmod>
         {% endif %}
     </url>
 {% endfor %}

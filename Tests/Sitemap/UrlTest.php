@@ -11,31 +11,31 @@
 
 namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
 
-use Dpn\XmlSitemapBundle\Sitemap\Entry;
+use Dpn\XmlSitemapBundle\Sitemap\Url;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class EntryTest extends \PHPUnit_Framework_TestCase
+class UrlTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider constructorProvider
      */
     public function testConstructor($url, $lastMod, $changeFreq, $priority, $expectedUrl, $expectedLastMod, $expectedChangeFreq, $expectedPriority)
     {
-        $entry = new Entry($url, $lastMod, $changeFreq, $priority);
+        $url = new Url($url, $lastMod, $changeFreq, $priority);
 
-        $this->assertSame($expectedUrl, $entry->getUrl());
-        $this->assertSame($expectedLastMod, $entry->getLastMod());
-        $this->assertSame($expectedChangeFreq, $entry->getChangeFreq());
-        $this->assertSame($expectedPriority, $entry->getPriority());
+        $this->assertSame($expectedUrl, $url->getLoc());
+        $this->assertSame($expectedLastMod, $url->getLastMod());
+        $this->assertSame($expectedChangeFreq, $url->getChangeFreq());
+        $this->assertSame($expectedPriority, $url->getPriority());
     }
 
     public function testInvalidUrl()
     {
         $this->setExpectedException('\InvalidArgumentException', 'The url "localhost" is not absolute.');
 
-        $entry = new Entry('localhost');
+        $url = new Url('localhost');
     }
 
     public function constructorProvider()

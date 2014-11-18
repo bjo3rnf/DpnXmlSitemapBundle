@@ -14,12 +14,12 @@ namespace Dpn\XmlSitemapBundle\Sitemap;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class Entry
+class Url
 {
     /**
      * @var string
      */
-    protected $url;
+    protected $loc;
 
     /**
      * @var string|null
@@ -90,20 +90,20 @@ class Entry
     }
 
     /**
-     * @param string      $url
+     * @param string      $loc
      * @param null|string $lastMod
      * @param null|string $changeFreq
      * @param null|float  $priority
      */
-    public function __construct($url, $lastMod = null, $changeFreq = null, $priority = null)
+    public function __construct($loc, $lastMod = null, $changeFreq = null, $priority = null)
     {
-        $components = parse_url($url);
+        $components = parse_url($loc);
 
         if (!isset($components['scheme']) || !isset($components['host'])) {
-            throw new \InvalidArgumentException(sprintf('The url "%s" is not absolute.', $url));
+            throw new \InvalidArgumentException(sprintf('The url "%s" is not absolute.', $loc));
         }
 
-        $this->url = htmlspecialchars($url);
+        $this->loc = htmlspecialchars($loc);
 
         $this->lastMod = self::normalizeLastMod($lastMod);
         $this->changeFreq = self::normalizeChangeFreq($changeFreq);
@@ -113,9 +113,9 @@ class Entry
     /**
      * @return string
      */
-    public function getUrl()
+    public function getLoc()
     {
-        return $this->url;
+        return $this->loc;
     }
 
     /**
