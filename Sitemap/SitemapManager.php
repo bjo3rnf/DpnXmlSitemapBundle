@@ -32,9 +32,9 @@ class SitemapManager
     protected $maxPerSitemap;
 
     /**
-     * @var Url[]|null
+     * @var UrlSet|null
      */
-    protected $urls;
+    protected $urlSet;
 
     /**
      * @var GeneratorInterface[]
@@ -74,21 +74,21 @@ class SitemapManager
     }
 
     /**
-     * @return Url[]
+     * @return UrlSet
      */
-    public function getSitemapUrls()
+    public function getUrlSet()
     {
-        if (null !== $this->urls) {
-            return $this->urls;
+        if (null !== $this->urlSet) {
+            return $this->urlSet;
         }
 
-        $urls = array();
+        $urlSet = new UrlSet();
 
         foreach ($this->generators as $generator) {
-            $urls = array_merge($urls, $generator->generate());
+            $urlSet->combine($generator->generate());
         }
 
-        return $this->urls = $urls;
+        return $this->urlSet = $urlSet;
     }
 
     /**
@@ -96,7 +96,7 @@ class SitemapManager
      */
     public function countSitemapUrls()
     {
-        return count($this->getSitemapUrls());
+        return count($this->getUrlSet());
     }
 
     /**
@@ -116,25 +116,27 @@ class SitemapManager
     /**
      * @param int $number
      *
-     * @return Url[]
+     * @return UrlSet
      *
      * @throws \InvalidArgumentException
      */
-    public function getUrlsForSitemap($number)
+    public function getUrlSetForSitemap($number)
     {
         $numberOfSitemaps = $this->getNumberOfSitemaps();
+
+        if (1 > $number) {
+            throw new \InvalidArgumentException('Number must be positive.');
+        }
 
         if ($number > $numberOfSitemaps) {
             throw new \InvalidArgumentException('Number exceeds total sitemap count.');
         }
 
         if (1 === $numberOfSitemaps) {
-            return $this->getSitemapUrls();
+            return $this->getUrlSet();
         }
 
-        $sitemaps = array_chunk($this->getSitemapUrls(), $this->maxPerSitemap);
-
-        return $sitemaps[$number - 1];
+        return $this->getUrlSet()->slice(($number - 1) * $this->maxPerSitemap, $this->maxPerSitemap);
     }
 
     /**
@@ -144,12 +146,10 @@ class SitemapManager
      */
     public function renderSitemap($number = null)
     {
-        $urls = null === $number ? $this->getSitemapUrls() : $this->getUrlsForSitemap($number);
-
         return $this->templating->render(
             'DpnXmlSitemapBundle::sitemap.xml.twig',
             array(
-                'urls' => $urls,
+                'urls' => null === $number ? $this->getUrlSet() : $this->getUrlSetForSitemap($number),
                 'default_priority' => Url::normalizePriority($this->defaults['priority']),
                 'default_changefreq' => Url::normalizeChangeFreq($this->defaults['changefreq']),
             )

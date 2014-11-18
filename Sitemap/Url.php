@@ -14,7 +14,7 @@ namespace Dpn\XmlSitemapBundle\Sitemap;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class Url
+final class Url
 {
     /**
      * @var string

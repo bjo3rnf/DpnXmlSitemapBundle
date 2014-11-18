@@ -11,8 +11,8 @@
 
 namespace Dpn\XmlSitemapBundle\Tests\Fixtures;
 
-use Dpn\XmlSitemapBundle\Sitemap\Url;
 use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
+use Dpn\XmlSitemapBundle\Sitemap\UrlSet;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -28,11 +28,10 @@ class TestGenerator implements GeneratorInterface
 
     public function generate()
     {
-        $urls = array();
+        $urls = new UrlSet();
 
         for ($i = 1; $i <= $this->numberOfUrls; $i++) {
-            $url = new Url(sprintf('http://localhost/foo/%s', $i));
-            $urls[] = $url;
+            $urls->add(sprintf('http://localhost/foo/%s', $i));
         }
 
         return $urls;

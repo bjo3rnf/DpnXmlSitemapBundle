@@ -72,7 +72,7 @@ a custom generator (see below).
 For more complex routes that have parameters, you must create a custom generator.
 
 1. Create a generator class that implements `Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface`.
-This class must have a `generate()` method that returns an array of `Dpn\XmlSitemapBundle\Sitemap\Url` objects.
+This class must have a `generate()` method that returns a `Dpn\XmlSitemapBundle\Sitemap\UrlSet` object.
 
     ```php
     use Dpn\XmlSitemapBundle\Sitemap\Url;
@@ -82,13 +82,13 @@ This class must have a `generate()` method that returns an array of `Dpn\XmlSite
     {
         public function generate()
         {
-            $urls = array();
+            $urlSet = new UrlSet();
 
-            $urls[] = new Url('http://example.com/foobar'); // must be absolute URL
+            $urlSet->add('http://example.com/foobar'); // must be absolute URL
 
             // add more urls - perhaps fetched from database
 
-            return $urls;
+            return $urlSet;
         }
     }
     ```

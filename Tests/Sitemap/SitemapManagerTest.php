@@ -25,11 +25,11 @@ class SitemapManagerTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testGetUrls()
+    public function testGetUrlSet()
     {
         $manager = $this->getManager(10, 50000);
 
-        $this->assertCount(10, $manager->getSitemapUrls());
+        $this->assertCount(10, $manager->getUrlSet());
     }
 
     public function testCountUrls()
@@ -50,42 +50,55 @@ class SitemapManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $manager3->getNumberOfSitemaps());
     }
 
-    public function testGetUrlsForSitemap()
+    public function testGetUrlSetForSitemap()
     {
         $manager1 = $this->getManager(10, 50000);
-        $this->assertCount(10, $manager1->getUrlsForSitemap(1));
+        $this->assertCount(10, $manager1->getUrlSetForSitemap(1));
 
         $manager2 = $this->getManager(10, 5);
-        $this->assertCount(5, $manager2->getUrlsForSitemap(1));
-        $this->assertCount(5, $manager2->getUrlsForSitemap(2));
+        $this->assertCount(5, $manager2->getUrlSetForSitemap(1));
+        $this->assertCount(5, $manager2->getUrlSetForSitemap(2));
 
-        $urls = $manager2->getUrlsForSitemap(1);
+        $urls = $manager2->getUrlSetForSitemap(1);
         $this->assertEquals('http://localhost/foo/1', $urls[0]->getLoc());
         $this->assertEquals('http://localhost/foo/5', $urls[4]->getLoc());
 
-        $urls = $manager2->getUrlsForSitemap(2);
+        $urls = $manager2->getUrlSetForSitemap(2);
         $this->assertEquals('http://localhost/foo/6', $urls[0]->getLoc());
         $this->assertEquals('http://localhost/foo/10', $urls[4]->getLoc());
 
         $manager3 = $this->getManager(13, 5);
-        $this->assertCount(5, $manager3->getUrlsForSitemap(1));
-        $this->assertCount(5, $manager3->getUrlsForSitemap(2));
-        $this->assertCount(3, $manager3->getUrlsForSitemap(3));
+        $this->assertCount(5, $manager3->getUrlSetForSitemap(1));
+        $this->assertCount(5, $manager3->getUrlSetForSitemap(2));
+        $this->assertCount(3, $manager3->getUrlSetForSitemap(3));
 
-        $urls = $manager3->getUrlsForSitemap(1);
+        $urls = $manager3->getUrlSetForSitemap(1);
         $this->assertEquals('http://localhost/foo/1', $urls[0]->getLoc());
         $this->assertEquals('http://localhost/foo/5', $urls[4]->getLoc());
 
-        $urls = $manager3->getUrlsForSitemap(2);
+        $urls = $manager3->getUrlSetForSitemap(2);
         $this->assertEquals('http://localhost/foo/6', $urls[0]->getLoc());
         $this->assertEquals('http://localhost/foo/10', $urls[4]->getLoc());
 
-        $urls = $manager3->getUrlsForSitemap(3);
+        $urls = $manager3->getUrlSetForSitemap(3);
         $this->assertEquals('http://localhost/foo/11', $urls[0]->getLoc());
         $this->assertEquals('http://localhost/foo/13', $urls[2]->getLoc());
+    }
 
-        $this->setExpectedException('\InvalidArgumentException');
-        $manager3->getUrlsForSitemap(500);
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetUrlSetForSitemapNegative()
+    {
+        $this->getManager(10, 50000)->getUrlSetForSitemap(0);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetUrlSetForSitemapOutOfRange()
+    {
+        $this->getManager(10, 50000)->getUrlSetForSitemap(500);
     }
 
     public function testRenderSitemap()

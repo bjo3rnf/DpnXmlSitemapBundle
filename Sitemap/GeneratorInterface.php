@@ -17,7 +17,7 @@ namespace Dpn\XmlSitemapBundle\Sitemap;
 interface GeneratorInterface
 {
     /**
-     * @return Url[]
+     * @return UrlSet
      */
     public function generate();
 }
