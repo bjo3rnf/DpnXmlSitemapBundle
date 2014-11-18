@@ -1,14 +1,30 @@
 <?php
 
+/**
+ * This file is part of the DpnXmlSitemapBundle package.
+ *
+ * (c) Björn Fromme <mail@bjo3rn.com>
+ *
+ * For the full copyright and license information, please view the Resources/meta/LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
 
 use Dpn\XmlSitemapBundle\Sitemap\SitemapManager;
+use Dpn\XmlSitemapBundle\Tests\Fixtures\TestGenerator;
+use Mockery as m;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class ManagerTest extends \PHPUnit_Framework_TestCase
+class SitemapManagerTest extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testGetEntries()
     {
         $manager = $this->getManager(10, 50000);
@@ -72,15 +88,46 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager3->getEntriesForSitemap(500);
     }
 
+    public function testRenderSitemap()
+    {
+        $templating = m::mock('Symfony\Component\Templating\EngineInterface');
+        $templating
+            ->shouldReceive('render')
+            ->twice()
+            ->with('DpnXmlSitemapBundle::sitemap.xml.twig', m::type('array'))
+            ->andReturn('rendered template');
+
+        $manager = new SitemapManager(array(), 1, $templating);
+        $manager->addGenerator(new TestGenerator(2));
+
+        $this->assertSame('rendered template', $manager->renderSitemap());
+        $this->assertSame('rendered template', $manager->renderSitemap(2));
+    }
+
+    public function testRenderSitemapIndex()
+    {
+        $templating = m::mock('Symfony\Component\Templating\EngineInterface');
+        $templating
+            ->shouldReceive('render')
+            ->once()
+            ->with('DpnXmlSitemapBundle::sitemap_index.xml.twig', array('num_sitemaps' => 2, 'host' => 'http://localhost'))
+            ->andReturn('rendered template');
+
+        $manager = new SitemapManager(array(), 1, $templating);
+        $manager->addGenerator(new TestGenerator(2));
+
+        $this->assertSame('rendered template', $manager->renderSitemapIndex('http://localhost'));
+    }
+
     /**
      * @param $numberOfEntries
      * @param $maxPerSitemap
+     *
      * @return SitemapManager
      */
     private function getManager($numberOfEntries, $maxPerSitemap)
     {
-        $templating = $this->getMock('Symfony\Component\Templating\EngineInterface');
-        $manager = new SitemapManager(array(), $maxPerSitemap, $templating);
+        $manager = new SitemapManager(array(), $maxPerSitemap, m::mock('Symfony\Component\Templating\EngineInterface'));
         $manager->addGenerator(new TestGenerator($numberOfEntries));
 
         return $manager;

@@ -5,6 +5,8 @@
  *
  * (c) Björn Fromme <mail@bjo3rn.com>
  *
+ * For the full copyright and license information, please view the Resources/meta/LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Dpn\XmlSitemapBundle\DependencyInjection\Compiler;
@@ -39,5 +41,4 @@ class GeneratorCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('addGenerator', array(new Reference($id)));
         }
     }
-
 }

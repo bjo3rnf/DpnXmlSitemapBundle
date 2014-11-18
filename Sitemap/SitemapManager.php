@@ -5,6 +5,8 @@
  *
  * (c) Björn Fromme <mail@bjo3rn.com>
  *
+ * For the full copyright and license information, please view the Resources/meta/LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Dpn\XmlSitemapBundle\Sitemap;
@@ -25,7 +27,7 @@ class SitemapManager
     protected $defaults;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxPerSitemap;
 
@@ -46,7 +48,7 @@ class SitemapManager
 
     /**
      * @param array           $defaults
-     * @param integer         $maxPerSitemap
+     * @param int             $maxPerSitemap
      * @param EngineInterface $templating
      */
     public function __construct(array $defaults, $maxPerSitemap, EngineInterface $templating)
@@ -54,7 +56,7 @@ class SitemapManager
         $this->defaults = array_merge(
             array(
                 'priority' => null,
-                'changefreq' => null
+                'changefreq' => null,
             ),
             $defaults
         );
@@ -92,7 +94,7 @@ class SitemapManager
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function countSitemapEntries()
     {
@@ -100,7 +102,7 @@ class SitemapManager
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getNumberOfSitemaps()
     {
@@ -114,8 +116,10 @@ class SitemapManager
     }
 
     /**
-     * @param $number
+     * @param int $number
+     *
      * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
+     *
      * @throws \InvalidArgumentException
      */
     public function getEntriesForSitemap($number)
@@ -136,35 +140,36 @@ class SitemapManager
     }
 
     /**
-     * @param integer|null $number
+     * @param int|null $number
+     *
      * @return string
      */
     public function renderSitemap($number = null)
     {
-        if (null === $number) {
-            $entries = $this->getSitemapEntries();
-        } else {
-            $entries = $this->getEntriesForSitemap($number);
-        }
+        $entries = null === $number ? $this->getSitemapEntries() : $this->getEntriesForSitemap($number);
 
-        return $this->templating->render('DpnXmlSitemapBundle::sitemap.xml.twig',
+        return $this->templating->render(
+            'DpnXmlSitemapBundle::sitemap.xml.twig',
             array(
                 'entries' => $entries,
                 'default_priority' => Entry::normalizePriority($this->defaults['priority']),
-                'default_changefreq' => Entry::normalizeChangeFreq($this->defaults['changefreq'])
+                'default_changefreq' => Entry::normalizeChangeFreq($this->defaults['changefreq']),
             )
         );
     }
 
     /**
      * @param string $host
+     *
      * @return string
      */
     public function renderSitemapIndex($host)
     {
-        return $this->templating->render('DpnXmlSitemapBundle::sitemap_index.xml.twig', array(
+        return $this->templating->render(
+            'DpnXmlSitemapBundle::sitemap_index.xml.twig',
+            array(
                 'num_sitemaps' => $this->getNumberOfSitemaps(),
-                'host' => $host
+                'host' => $host,
             )
         );
     }

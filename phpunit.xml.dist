@@ -12,11 +12,9 @@
          bootstrap="./vendor/autoload.php"
         >
 
-    <!--
     <php>
-        <server name="KERNEL_DIR" value="./Tests/Fixtures/App/" />
+        <server name="KERNEL_DIR" value="./Tests/Fixtures/" />
     </php>
-    -->
 
     <testsuites>
         <testsuite name="DpnXmlSitemapBundle Test Suite">

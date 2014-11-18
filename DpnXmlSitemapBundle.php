@@ -5,16 +5,21 @@
  *
  * (c) Björn Fromme <mail@bjo3rn.com>
  *
+ * For the full copyright and license information, please view the Resources/meta/LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Dpn\XmlSitemapBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Dpn\XmlSitemapBundle\DependencyInjection\Compiler\GeneratorCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DpnXmlSitemapBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

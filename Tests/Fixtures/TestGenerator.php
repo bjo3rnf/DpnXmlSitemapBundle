@@ -1,16 +1,25 @@
 <?php
 
-namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
+/**
+ * This file is part of the DpnXmlSitemapBundle package.
+ *
+ * (c) Björn Fromme <mail@bjo3rn.com>
+ *
+ * For the full copyright and license information, please view the Resources/meta/LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
+namespace Dpn\XmlSitemapBundle\Tests\Fixtures;
+
 use Dpn\XmlSitemapBundle\Sitemap\Entry;
+use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 class TestGenerator implements GeneratorInterface
 {
-    protected $numberOfEntries;
+    private $numberOfEntries;
 
     public function __construct($numberOfEntries)
     {
@@ -28,5 +37,4 @@ class TestGenerator implements GeneratorInterface
 
         return $entries;
     }
-
 }

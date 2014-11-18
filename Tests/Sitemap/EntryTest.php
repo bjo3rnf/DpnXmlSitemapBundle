@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the DpnXmlSitemapBundle package.
+ *
+ * (c) Björn Fromme <mail@bjo3rn.com>
+ *
+ * For the full copyright and license information, please view the Resources/meta/LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Dpn\XmlSitemapBundle\Tests\Sitemap;
 
 use Dpn\XmlSitemapBundle\Sitemap\Entry;
@@ -42,7 +51,7 @@ class EntryTest extends \PHPUnit_Framework_TestCase
             array('http://localhost/', null, null, 0.6, 'http://localhost/', null, null, 0.6),
             array('http://localhost/', null, null, '0.5', 'http://localhost/', null, null, 0.5),
             array('http://localhost/', null, null, '3.0', 'http://localhost/', null, null, null),
-            array('http://localhost/', null, null, -1, 'http://localhost/', null, null, null)
+            array('http://localhost/', null, null, -1, 'http://localhost/', null, null, null),
         );
     }
 }
