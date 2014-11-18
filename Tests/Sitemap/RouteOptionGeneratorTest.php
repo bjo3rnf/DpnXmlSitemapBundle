@@ -40,14 +40,14 @@ class RouteOptionGeneratorTest extends \PHPUnit_Framework_TestCase
         $urls = $generator->generate();
 
         $this->assertCount(2, $urls);
-        $entry = $urls[0];
+        $url = $urls[0];
 
-        $this->assertInstanceOf('Dpn\XmlSitemapBundle\Sitemap\Entry', $entry);
-        $this->assertSame('http://localhost/bar', $entry->getUrl());
+        $this->assertInstanceOf('Dpn\XmlSitemapBundle\Sitemap\Url', $url);
+        $this->assertSame('http://localhost/bar', $url->getLoc());
 
-        $entry = $urls[1];
+        $url = $urls[1];
 
-        $this->assertSame('weekly', $entry->getChangeFreq());
+        $this->assertSame('weekly', $url->getChangeFreq());
     }
 
     public function testMissingParameters()

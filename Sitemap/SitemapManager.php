@@ -32,9 +32,9 @@ class SitemapManager
     protected $maxPerSitemap;
 
     /**
-     * @var \Dpn\XmlSitemapBundle\Sitemap\Entry[]|null
+     * @var UrlSet|null
      */
-    protected $entries;
+    protected $urlSet;
 
     /**
      * @var GeneratorInterface[]
@@ -74,31 +74,29 @@ class SitemapManager
     }
 
     /**
-     * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
+     * @return UrlSet
      */
-    public function getSitemapEntries()
+    public function getUrlSet()
     {
-        if (null !== $this->entries) {
-            return $this->entries;
+        if (null !== $this->urlSet) {
+            return $this->urlSet;
         }
 
-        $entries = array();
+        $urlSet = new UrlSet();
 
         foreach ($this->generators as $generator) {
-            $entries = array_merge($entries, $generator->generate());
+            $urlSet->combine($generator->generate());
         }
 
-        $this->entries = $entries;
-
-        return $this->entries;
+        return $this->urlSet = $urlSet;
     }
 
     /**
      * @return int
      */
-    public function countSitemapEntries()
+    public function countSitemapUrls()
     {
-        return count($this->getSitemapEntries());
+        return count($this->getUrlSet());
     }
 
     /**
@@ -106,7 +104,7 @@ class SitemapManager
      */
     public function getNumberOfSitemaps()
     {
-        $total = $this->countSitemapEntries();
+        $total = $this->countSitemapUrls();
 
         if ($total <= $this->maxPerSitemap) {
             return 1;
@@ -118,25 +116,27 @@ class SitemapManager
     /**
      * @param int $number
      *
-     * @return \Dpn\XmlSitemapBundle\Sitemap\Entry[]
+     * @return UrlSet
      *
      * @throws \InvalidArgumentException
      */
-    public function getEntriesForSitemap($number)
+    public function getUrlSetForSitemap($number)
     {
         $numberOfSitemaps = $this->getNumberOfSitemaps();
+
+        if (1 > $number) {
+            throw new \InvalidArgumentException('Number must be positive.');
+        }
 
         if ($number > $numberOfSitemaps) {
             throw new \InvalidArgumentException('Number exceeds total sitemap count.');
         }
 
         if (1 === $numberOfSitemaps) {
-            return $this->getSitemapEntries();
+            return $this->getUrlSet();
         }
 
-        $sitemaps = array_chunk($this->getSitemapEntries(), $this->maxPerSitemap);
-
-        return $sitemaps[$number - 1];
+        return $this->getUrlSet()->slice(($number - 1) * $this->maxPerSitemap, $this->maxPerSitemap);
     }
 
     /**
@@ -146,14 +146,12 @@ class SitemapManager
      */
     public function renderSitemap($number = null)
     {
-        $entries = null === $number ? $this->getSitemapEntries() : $this->getEntriesForSitemap($number);
-
         return $this->templating->render(
             'DpnXmlSitemapBundle::sitemap.xml.twig',
             array(
-                'entries' => $entries,
-                'default_priority' => Entry::normalizePriority($this->defaults['priority']),
-                'default_changefreq' => Entry::normalizeChangeFreq($this->defaults['changefreq']),
+                'urls' => null === $number ? $this->getUrlSet() : $this->getUrlSetForSitemap($number),
+                'default_priority' => Url::normalizePriority($this->defaults['priority']),
+                'default_changefreq' => Url::normalizeChangeFreq($this->defaults['changefreq']),
             )
         );
     }

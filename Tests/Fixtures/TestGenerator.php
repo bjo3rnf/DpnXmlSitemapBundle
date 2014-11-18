@@ -11,30 +11,29 @@
 
 namespace Dpn\XmlSitemapBundle\Tests\Fixtures;
 
-use Dpn\XmlSitemapBundle\Sitemap\Entry;
 use Dpn\XmlSitemapBundle\Sitemap\GeneratorInterface;
+use Dpn\XmlSitemapBundle\Sitemap\UrlSet;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 class TestGenerator implements GeneratorInterface
 {
-    private $numberOfEntries;
+    private $numberOfUrls;
 
-    public function __construct($numberOfEntries)
+    public function __construct($numberOfUrls)
     {
-        $this->numberOfEntries = $numberOfEntries;
+        $this->numberOfUrls = $numberOfUrls;
     }
 
     public function generate()
     {
-        $entries = array();
+        $urls = new UrlSet();
 
-        for ($i = 1; $i <= $this->numberOfEntries; $i++) {
-            $entry = new Entry(sprintf('http://localhost/foo/%s', $i));
-            $entries[] = $entry;
+        for ($i = 1; $i <= $this->numberOfUrls; $i++) {
+            $urls->add(sprintf('http://localhost/foo/%s', $i));
         }
 
-        return $entries;
+        return $urls;
     }
 }

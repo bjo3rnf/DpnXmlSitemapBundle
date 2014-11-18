@@ -33,17 +33,16 @@ class RouteOptionGenerator implements GeneratorInterface
     }
 
     /**
-     * @return Entry[]
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
     public function generate()
     {
-        $entries = array();
+        $urlSet = new UrlSet();
         $collection = $this->router->getRouteCollection();
 
         foreach ($collection->all() as $name => $route) {
-            /** @var \Symfony\Component\Routing\Route $route */
             $option = $route->getOption('sitemap');
 
             if (true !== $option && true !== is_array($option)) {
@@ -57,19 +56,19 @@ class RouteOptionGenerator implements GeneratorInterface
             }
 
             try {
-                $url = $this->router->generate($name, array(), true);
+                $loc = $this->router->generate($name, array(), true);
             } catch (MissingMandatoryParametersException $e) {
                 throw new \InvalidArgumentException(sprintf('The route "%s" cannot have the sitemap option because it requires parameters', $name));
             }
 
-            $entries[] = new Entry(
-                $url,
+            $urlSet->add(
+                $loc,
                 true === isset($options['lastmod']) ? $options['lastmod'] : null,
                 true === isset($options['changefreq']) ? $options['changefreq'] : null,
                 true === isset($options['priority']) ? $options['priority'] : null
             );
         }
 
-        return $entries;
+        return $urlSet;
     }
 }
