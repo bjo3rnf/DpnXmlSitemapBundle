@@ -33,6 +33,7 @@ class EntryTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('http://localhost/', null, null, null, 'http://localhost/', null, null, null),
+            array('http://localhost/index.php?foo=bar&bar=baz', null, null, null, 'http://localhost/index.php?foo=bar&amp;bar=baz', null, null, null),
             array('http://localhost/', 'foo', 'bar', 'baz', 'http://localhost/', null, null, null),
             array('http://localhost/', new \DateTime('Nov 1, 2013'), null, null, 'http://localhost/', '2013-11-01', null, null),
             array('http://localhost/', '2013-11-01', null, null, 'http://localhost/', '2013-11-01', null, null),
