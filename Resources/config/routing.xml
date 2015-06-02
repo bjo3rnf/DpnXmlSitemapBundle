@@ -3,18 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="dpn_xml_sitemap" pattern="/sitemap.xml" methods="GET">
+    <route id="dpn_xml_sitemap" path="/sitemap.xml" methods="GET">
         <default key="_controller">dpn_xml_sitemap.controller:sitemapAction</default>
         <default key="_format">xml</default>
     </route>
 
-    <route id="dpn_xml_sitemap_number" pattern="/sitemap{number}.xml" methods="GET">
+    <route id="dpn_xml_sitemap_number" path="/sitemap{number}.xml" methods="GET">
         <default key="_controller">dpn_xml_sitemap.controller:sitemapNumberAction</default>
         <default key="_format">xml</default>
         <requirement key="number">\d+</requirement>
     </route>
 
-    <route id="dpn_xml_sitemap_index" pattern="/sitemap_index.xml" methods="GET">
+    <route id="dpn_xml_sitemap_index" path="/sitemap_index.xml" methods="GET">
         <default key="_controller">dpn_xml_sitemap.controller:sitemapIndexAction</default>
         <default key="_format">xml</default>
     </route>
