@@ -1,0 +1,6 @@
+filter:
+  excluded_paths: [Tests/*, vendor/*]
+checks:
+  php: true
+tools:
+  external_code_coverage: true
