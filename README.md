@@ -49,7 +49,8 @@ To expose a route to the sitemap add the option `sitemap` to your route definiti
 blog_index:
     path:      /blog
     defaults:  { _controller: AppBundle:Blog:index }
-    sitemap: true
+    options:
+        sitemap: true
 ```
 
 This will expose this route to your sitemap using the default options from your config. To control the options
@@ -59,9 +60,10 @@ for this sitemap entry, add them to the `sitemap` option:
 blog_index:
     path:      /blog
     defaults:  { _controller: AppBundle:Blog:index }
-    sitemap:
-        priority: 0.7
-        changefreq: hourly
+    options:
+        sitemap:
+                priority: 0.7
+                changefreq: hourly
 ```
 
 **NOTE**: Only routes without parameters may be exposed in this way. For routes with parameters, you must create
