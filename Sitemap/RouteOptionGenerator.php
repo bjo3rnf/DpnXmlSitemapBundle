@@ -12,6 +12,7 @@
 namespace Dpn\XmlSitemapBundle\Sitemap;
 
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -57,7 +58,7 @@ class RouteOptionGenerator implements GeneratorInterface
             }
 
             try {
-                $url = $this->router->generate($name, array(), true);
+                $url = $this->router->generate($name, array(), UrlGeneratorInterface::ABSOLUTE_URL);
             } catch (MissingMandatoryParametersException $e) {
                 throw new \InvalidArgumentException(sprintf('The route "%s" cannot have the sitemap option because it requires parameters', $name));
             }
