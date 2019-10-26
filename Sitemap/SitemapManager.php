@@ -148,6 +148,16 @@ class SitemapManager
     {
         $entries = null === $number ? $this->getSitemapEntries() : $this->getEntriesForSitemap($number);
 
+        uasort($entries, function ($a, $b) {
+            $dirA = pathinfo($a->getUrl())['dirname'];
+            $dirB = pathinfo($b->getUrl())['dirname'];
+            if ($dirA != $dirB) {
+                return $dirA > $dirB;
+            }
+
+            return $a->getUrl() > $b->getUrl();
+        });
+
         return $this->templating->render(
             'DpnXmlSitemapBundle::sitemap.xml.twig',
             array(
